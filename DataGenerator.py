@@ -5,5 +5,7 @@
 #
 # Data structure :
 #
-# 
+#   n           weightMax
+#   valueItem   weightItem
+#
 #
