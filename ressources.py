@@ -1,7 +1,7 @@
 class item:
     def __init__(self, value, weight):
-        self.value = value
-        self.weight = weight
+        self.value = float(value)
+        self.weight = float(weight)
         self.ratio = float(value) / weight
 
     def printItem(self):
@@ -22,5 +22,5 @@ def readFileCreateList(path):
         wmax = int(words[1])
         for line in f:
             data = line.split(" ")
-            listItem.append(item(int(data[0]), int(data[1])))
+            listItem.append(item(float(data[0]), float(data[1])))
     return n, wmax, listItem

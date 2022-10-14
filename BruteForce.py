@@ -47,7 +47,7 @@ def bruteForce(capacity, items):
 
 
 # On teste la fonction bruteForce avec les données du fichier data.txt
-nbrItems, capacity, items = ressources.readFileCreateList("Data/low-dimensional/f1_l-d_kp_10_269.txt")
+nbrItems, capacity, items = ressources.readFileCreateList("Data/low-dimensional/f10_l-d_kp_20_879.txt")
 
 sortedList = bruteForce(capacity, items)
 
@@ -60,6 +60,7 @@ for combinaison in sortedList:
         finalValue += item.value
         finalWeight += item.weight
         item.printItem()
-
-print("Total Value : " + str(finalValue))
-print("Total Weight : " + str(finalWeight))
+    print("Total Value : " + str(finalValue))
+    print("Total Weight : " + str(finalWeight))
+    finalValue = 0
+    finalWeight = 0
