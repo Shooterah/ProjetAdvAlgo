@@ -1,6 +1,15 @@
 import ressources
 
-
+# This function is used to brute force the Knapsack problem
+# It takes the list of items and the capacity of the knapsack as parameters
+# It returns the list of items that are in the knapsack
+# It returns an empty list if no solution is found
+# Its complexity is O(2^n)
+# So it means that if we have 10 items, it will take 1024 operations to find the solution
+# If we have 20 items, it will take 1,048,576 operations to find the solution
+# If we have 30 items, it will take 1,073,741,824 operations to find the solution
+# So it is very slow
+# I think it is not recommended to use it with more than 20 items, but it always gives the optimal solution
 def bruteForce(capacity, items):
     
     # Create a list of all possible combinations of items
