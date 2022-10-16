@@ -32,7 +32,6 @@
 #  +---------+
 #
 
-from fileinput import filename
 import sys
 import random
 
@@ -73,7 +72,7 @@ def createStringValues(wMax, vMax):
     # set to a string value
     w = str(w)
     v = str(v)
-    return(w + " " + v + "")
+    return(v + " " + w + "")
 
 # Create a file 
 def createFile(wMax, vMax, n, filename) :
