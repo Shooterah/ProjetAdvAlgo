@@ -7,7 +7,7 @@ class item:
 
     def printItem(self):
         #print("Value : " + str(self.value) + "| Weight : " + str(self.weight) + "Ratio : " + str(self.ratio) + " InitPos : " + str(self.pos))
-        print("Value : %-8.2f |\t Weight : %-8.2f |\tRatio : %-8.4f |\tInitPos : %-4d" % (self.value,self.weight,self.ratio ,self.pos))
+        print("|  Value : %-8.2f |\t Weight : %-8.2f |\tRatio : %-8.4f |\tInitPos : %-6d |" % (self.value,self.weight,self.ratio ,self.pos))
 
 
 def readFileCreateList(path):
@@ -28,3 +28,8 @@ def readFileCreateList(path):
             listItem.append(item(i,float(data[0]), float(data[1])))
             i += 1
     return n, wmax, listItem
+
+def fullLine(n):
+    for i in range(n):
+        print("-",end="")
+    print("\b")
