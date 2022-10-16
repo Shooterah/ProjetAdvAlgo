@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 #
 #  +---------------------------------------+
 #  |Generator of Data for Knapsack problem |
@@ -29,6 +31,8 @@
 #  | Imports |
 #  +---------+
 #
+
+from fileinput import filename
 import sys
 import random
 
@@ -38,10 +42,11 @@ import random
 #  +-----------+
 #
 
-MUTLV = 10
+MULTV = 10
 
 MINV = 1
 MINW = 1
+
 
 #
 #  +-------------+
@@ -49,23 +54,42 @@ MINW = 1
 #  +-------------+
 #
 
-# Count all the arguments
-def nb_args(*args):
-    return(len(args))
+# Manual
+def manual() :
+    print("> 2 int arguments expected")
+    print("> DataGenerator.py n wMax")
+    print("> Options :")
+    print("     -f : to put filename for the file")
 
 # Define random number
-def random(min,max):
+def rand(min,max):
     return random.randint(min,max)
 
 # Create value in string
 def createStringValues(wMax, vMax):
-    w = random(MINW,wMax)
-    v = random(MINV,vMax)
+    # get the integer value
+    w = rand(MINW,wMax)
+    v = rand(MINV,vMax)
+    # set to a string value
+    w = str(w)
+    v = str(v)
     return(w + " " + v + "")
 
-# Create a file ( a modifier)
+# Create a file 
+def createFile(wMax, vMax, n, filename) :
+    filename = "Data/personal/" + filename
+    file = open(filename, "w")
+    # First line of the file
+    file.write(str(n) + " " + str(wMax))
+    for i in range(n) :
+        file.write("\n")
+        line = createStringValues(wMax, vMax)
+        file.write(line)
+    file.close()
+    return
 
-fichier = open("data.txt", "r")
+    
+
     
 
 
@@ -75,32 +99,50 @@ fichier = open("data.txt", "r")
 #  +------+
 #
 
-print("Begin")
 
-# Verify if the nb of arguments are correct
-if nb_args(sys.argv)+1 < 2 :
-    print("Not enough arguments")
-    print nb_args(sys.argv)
+
+#print("Begin")
+
+
+# Verify if the nb of arguments is correct
+if len(sys.argv)-1 < 2 :
+    print("Not enough arguments (" + str(len(sys.argv)) + "): ")
+    manual()
+    print("Program failed")
+    print("Exit")
     exit()
+   
+# Define classic filename 
+filename = "data.txt"
+
 
 # Take the values from the command line
 n = sys.argv[1]
 wMax = sys.argv[2]
 
-# vMax value
-# Not to much
-vMax = n * MultV
+# Verify option to able filename
+if ((len(sys.argv)-1 > 3) and (sys.argv[3] == "-f")) :
+    filename = sys.argv[4]
 
-# Creation du fichier ( a modifier)
-createStringValues(wMax, vMax)
+# Set the (String) values to integers
+n = int(n)
+wMax = int(wMax)
 
-# Print the arguments (Not necessary)
-print("Values :")
-print("n =" + n)
-print("wMax = " + wMax)
-print("vMax = " + vMax)
+# vMax value (not to much)
+vMax = n * MULTV
 
-print("End")
+# File creation
+file = createFile(wMax, vMax, n, str(filename))
+
+
+## Print the arguments (Not necessary)
+#print("Values :")
+#print("n =" + str(n))
+#print("wMax = " + str(wMax))
+#print("vMax = " + str(vMax))
+
+
+#print("End")
 
 
 exit()
