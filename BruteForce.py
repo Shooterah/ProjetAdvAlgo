@@ -10,21 +10,22 @@ import ressources
 # If we have 30 items, it will take 1,073,741,824 operations to find the solution
 # So it is very slow
 # I think it is not recommended to use it with more than 20 items, but it always gives the optimal solution
+
+
 def bruteForce(capacity, items):
-    
+
     # Create a list of all possible combinations of items
     combinaisons = []
-    
+
     # Create a list of all possible combinations of items that fit in the knapsack
     combinaisonsPossibles = []
-    
+
     # Create a list of all possible combinations of items that fit in the knapsack and that have the highest value
     combinaisonsPossiblesMax = []
-    
+
     # We initialize the highest combination value to 0
     valeurMax = 0
 
-    
     # We know that all possible combinations of items are 2^n
     # We create a list of all possible combinations of items
     # We use the binary system to create all possible combinations of items
@@ -40,18 +41,16 @@ def bruteForce(capacity, items):
         for j in range(len(items)):
             if (i >> j) % 2 == 1:
                 combinaisons[i].append(items[j])
-                
-                                        
+
     # Here we check if the combinations of items fit in the knapsack
     # If they fit, we add them to the list of possible combinations
-    for combinaison in combinaisons:   
-        poids = 0   
+    for combinaison in combinaisons:
+        poids = 0
         for item in combinaison:
-            poids += item.weight        
+            poids += item.weight
         if poids <= capacity:
             combinaisonsPossibles.append(combinaison)
-            
-            
+
     # Here we check which combination of items has the highest value
     # If they have the same value, we add them to the list of possible combinations with the highest value
     # If they have a higher value, we empty the list of possible combinations with the highest value and we add the new combination
@@ -59,19 +58,20 @@ def bruteForce(capacity, items):
     # We also update the highest value
     # We also update the list of items that make up the highest value combination
     for combinaison in combinaisonsPossibles:
-        valeur = 0 
+        valeur = 0
         for item in combinaison:
-            valeur += item.value    
+            valeur += item.value
         if valeur > valeurMax:
             valeurMax = valeur
-            combinaisonsPossiblesMax = [combinaison]   
+            combinaisonsPossiblesMax = [combinaison]
         elif valeur == valeurMax:
-            combinaisonsPossiblesMax.append(combinaison)    
+            combinaisonsPossiblesMax.append(combinaison)
     return combinaisonsPossiblesMax
 
 
 # Here we create the items that we will use in the knapsack problem and we add them to a list of items
-nbrItems, capacity, items = ressources.readFileCreateList("Data/low-dimensional/f10_l-d_kp_20_879.txt")
+nbrItems, capacity, items = ressources.readFileCreateList(
+    "Data/low-dimensional/f2_l-d_kp_20_878.txt")
 
 # Here we call the brute force function and we get the list of possible combinations of items with the highest value
 sortedList = bruteForce(capacity, items)
