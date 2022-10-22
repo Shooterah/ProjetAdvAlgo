@@ -68,6 +68,7 @@ class Interface(Frame):
 
 # Création de la fenêtre principale
 fenetre = Tk()
+fenetre.geometry("768x576")
 fenetre.title("Interface graphique")
 
 # Création d'un widget Button (bouton Quitter)
@@ -76,7 +77,7 @@ bouton_quitter.pack(side="bottom")
 
 # Création d'un widget Button (bouton 1)
 bouton1 = Button(fenetre, text="Brute Force", command=fenetre.quit)
-bouton1.pack(fill=X, ipady=10)
+bouton1.pack(fill=25 , ipady=20)
 
 # Création d'un widget Button (bouton 2)
 bouton2 = Button(fenetre, text="Greedy 1", command=fenetre.quit)
@@ -84,27 +85,27 @@ bouton2.pack(fill=X, ipady=20)
 
 # Création d'un widget Button (bouton 3)
 bouton3 = Button(fenetre, text="3", command=fenetre.quit)
-bouton3.pack(fill=X, ipady=30)
+bouton3.pack(fill=X, ipady=20)
 
 # Création d'un widget Button (bouton 4)
 bouton4 = Button(fenetre, text="4", command=fenetre.quit)
-bouton4.pack(fill=X, ipady=40)
+bouton4.pack(fill=X, ipady=20)
 
 # Création d'un widget Button (bouton 5)
 bouton5 = Button(fenetre, text="5", command=fenetre.quit)
-bouton5.pack(fill=X, ipady=50)
+bouton5.pack(fill=X, ipady=20)
 
 # Création d'un widget Button (bouton 6)
 bouton6 = Button(fenetre, text="6", command=fenetre.quit)
-bouton6.pack(fill=X, ipady=60)
+bouton6.pack(fill=X, ipady=20)
 
 # Création d'un widget Button (bouton 7)
 bouton7 = Button(fenetre, text="7", command=fenetre.quit)
-bouton7.pack(fill=X, ipady=70)
+bouton7.pack(fill=X, ipady=20)
 
 # Création d'un widget Button (bouton 8)
 bouton8 = Button(fenetre, text="8", command=fenetre.quit)
-bouton8.pack(fill=X, ipady=80)
+bouton8.pack(fill=X, ipady=20)
 
 
 # Création d'un widget Label (texte)
