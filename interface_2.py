@@ -1,9 +1,9 @@
 # Create a Window with Tkinter
+from asyncio import subprocess
 from tkinter import *
 import os
 import sys
-
-window = Tk()
+import subprocess
 
 # definition of programm's callback functions
 
@@ -13,15 +13,21 @@ def callbruteforce():
 
 
 def callgreedyv():
-    os.system("python Greedy.py -v Data/low-dimensional/f2_l-d_kp_20_878.txt")
+
+    # retrieve the file name
+    path = "Data/low-dimensional/"+fnright.get()
+    print("path=", path)
+    subprocess.run(["python", "Greedy.py", "-w",
+                   path])
 
 
 def callgreedyw():
-    os.system("python Greedy.py -w Data/low-dimensional/f2_l-d_kp_20_878.txt")
+    subprocess.run(["python", "Greedy.py", "-w",
+                   "Data/low-dimensional/f4_l-d_kp_4_11.txt"])
 
 
 def callgreedyr():
-    os.system("python Greedy.py -r Data/low-dimensional/f2_l-d_kp_20_878.txt")
+    os.system("python Greedy.py -r Data/low-dimensional/f4_l-d_kp_4_11.txt")
 
 
 def callDynamic():
@@ -32,12 +38,13 @@ def callBranchAndBound():
     os.system("python Branch_and_Bound.py")
 
 
+# main
+window = Tk()
 # personalise the window
 window.title("Graphic Interface")
 window.geometry("1080x720")
 window.minsize(480, 360)
 window.config(background="#528860")
-
 
 # create 2 vertical frames that take boyh 50% of the window
 frame_left = Frame(window, bg="#528860", bd=1, relief=SUNKEN)
