@@ -1,6 +1,5 @@
 from turtle import clear
 import ressources
-import numpy as np
 
 
 #Function Dynamic for the initialisation of the table
