@@ -233,21 +233,21 @@ except :
 if (opt == 'a' or opt == 'v'):
     print(UNDERLINE + BOLD + "\nEvaluation with greedy algorithm using values :\n" + CEND)
     vTot, res = greedy1(liItem, n ,wMax)
-    print("\nMaximum result : " + CBLUE + BOLD + str(vTot) + CEND)
+    print("\nMaximum value result : " + CBLUE + BOLD + str(vTot) + CEND)
     print("List of result (From the initial file): " + CBLUE + BOLD + str(res) + CEND)
     
 # Result with Greedy 2 ( option : 'a' or 'w') : 
 if (opt == 'a' or opt == 'w'):
     print(UNDERLINE + BOLD + "\nEvaluation with greedy algorithm using weights :\n" + CEND)
     vTot, res = greedy2(liItem, n ,wMax)
-    print("\nMaximum result : " + CBLUE + BOLD + str(vTot) + CEND)
+    print("\nMaximum value result : " + CBLUE + BOLD + str(vTot) + CEND)
     print("List of result (From the initial file): " + CBLUE + BOLD + str(res) + CEND)
 
 # Result with Greedy 3 ( option : 'a' or 'r') :
 if (opt == 'a' or opt == 'r'):
     print(UNDERLINE + BOLD + "\nEvaluation with greedy algorithm using ratios :\n" + CEND)
     vTot, res = greedy3(liItem, n ,wMax)
-    print("\nMaximum result : " + CBLUE + BOLD + str(vTot) + CEND)
+    print("\nMaximum value result : " + CBLUE + BOLD + str(vTot) + CEND)
     print("List of result (From the initial file): " + CBLUE + BOLD + str(res) + CEND)
   
 print(UNDERLINE + "\nInitial parameters :" + CEND)  
