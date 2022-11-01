@@ -93,3 +93,92 @@ def fullLine(n):
     for i in range(n):
         print("-",end="")
     print("\b")
+    
+    
+# Structure of an item for the multidimensional knapsack problem
+# The item is composed of :
+# 1] a list of value for each dimension
+# 2] a list of weight for each dimension
+# 3] a list of ratio for each dimension
+# 4] a position in the list of item
+class itemMD:
+    def __init__(self,pos,value,weight, ratio):
+        self.pos = pos # Position in the list of item
+        self.value = value # Value of the item
+        self.weight = weight # weight(vector) of the item for each dimension
+        self.ratio = ratio # List of ratio for each dimension
+
+    def printItem(self):
+        print("-------------------------------------")
+        print("| Pos : ", self.pos, "Value : ", self.value)
+        for i in range(len(self.weight)):
+            print("| Weight : ", self.weight[i], "Ratio : ", self.ratio[i], "Dimension : ", i)
+    
+    
+# This function will create a list of item used for the multidiemensional knapsack problem by reading a dataset file.
+# It take the path of the file as parameter
+# It return the list if item, the weight of all dimension, and the optimal value of the problem.
+def readMultiDimFile(path):
+    #List of Items
+    listItem = []
+    #List of weight of each dimension
+    weightDim = []
+    # Nbr of item
+    n = 0
+    # Nbr of dimension
+    d = 0
+    # Optimal value
+    opt = 0
+    with open(path) as f:
+        firstline = f.readline().rstrip()
+        words = firstline.split(" ")
+        n = int(words[0])
+        d = int(words[1])
+        opt = int(words[2])
+        
+        data = f.read()
+
+        value = []
+        weight = [[0 for x in range(d)] for y in range(n)]
+        ratio = [[0 for x in range(d)] for y in range(n)]
+        listeDonnee = []
+        
+        # Put the data into a list
+        for line in data.split("\n"):
+            for word in line.split(" "):
+                listeDonnee.append(word)
+        
+        index = 0
+        
+        # Create the list of item weight for each dimension
+        for i in range(n):
+            for j in range(d):
+                # Weight of item i in dimension j
+                weight[i][j] = int(listeDonnee[index])
+                index += 1
+                
+        # Create the list of item value     
+        for j in range(n):
+            # Value of item i
+            value.append(int(listeDonnee[index])) 
+            index += 1
+            
+        # Create the list of item ratio for each dimension
+        for i in range(n):
+            for j in range(d):
+                # Ratio of item i in dimension j
+                ratio[i][j] = value[i]/weight[i][j]
+                
+        # Create the list of item
+        for i in range(n):
+            listItem.append(itemMD(i,value[i],weight[i],ratio[i]))
+            
+        # Create the list of weight for each dimension
+        for i in range(d):
+            weightDim.append(int(listeDonnee[index]))
+            index += 1
+            
+    return listItem, d, weightDim, opt
+
+
+

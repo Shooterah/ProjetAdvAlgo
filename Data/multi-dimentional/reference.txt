@@ -1,0 +1,16 @@
+Dataset took at : 
+https://www.researchgate.net/publication/271198281_Benchmark_instances_for_the_Multidimensional_Knapsack_Problem
+
+
+Format :
+
+#item   #dimension  valueoptimal
+
+Weight of each item for the 1st dimension (#item nbr of Weight)
+Weight of each item for the 2nd dimension (#item nbr of Weight)
+...
+Weight of each item for the last dimension (#item nbr of Weight)
+
+Value of each item (#item nbr of value)
+
+Capacity of all dimension (#dimension nbr of value)
