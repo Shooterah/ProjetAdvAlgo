@@ -73,6 +73,7 @@
         \subsubsection{Idea}
             First of all, we need an \emph{Items} structure that will define an object that can go in the backpack. The structure is defined as follows:
 
+            \bigskip
             \begin{lstlisting}
 class item:
     def __init__(self, pos, value, weight):
@@ -81,6 +82,7 @@ class item:
         self.weight = float(weight)
         self.ratio = float(value) / weight
             \end{lstlisting}
+            \bigskip
             
             The structure has 4 fields, \emph{pos} which will indicate the position in a tree (useless in this problem), \emph{value} which will store the value of the object, \emph{weight} which will store the weight of the object and \emph{ratio} which will store the ratio value/weight of the object (useless here).\newline
 
@@ -101,10 +103,12 @@ class item:
             
             So we have 2 parameters for the function :
 
+            \bigskip
             \begin{lstlisting}
-    def bruteForce(capacity, items):
+def bruteForce(capacity, items):
             \end{lstlisting}
-
+            \bigskip
+            
             At the beginning of the function, we will create 5 variables:
             \begin{itemize}
                 \item \emph{start\_time} : Calculate the time of execution
@@ -114,17 +118,20 @@ class item:
                 \item \emph{valeurMax} : We initialize the highest combination value to 0
             \end{itemize}
 
+            \bigskip
             \begin{lstlisting}
-    start_time = time.time()
-    combinaisons = []
-    combinaisonsPossibles = []
-    combinaisonsPossiblesMax = []
-    valeurMax = 0
+start_time = time.time()
+combinaisons = []
+combinaisonsPossibles = []
+combinaisonsPossiblesMax = []
+valeurMax = 0
             \end{lstlisting}
-
+            \bigskip
+            
             Now you have to store all the possibilities (correct or not) in the \emph{combinaisons} list. We know that all possible combinations of items are $2^n$. We use the binary system to create all possible combinations of items. For example, if we have 3 items, we will have 8 possible combinations of items : 000, 001, 010, 011, 100, 101, 110, 111 ...\newline 
             000 means that we don't take any item, 001 means that we take the first item, 010 means that we take the second item, 011 means that we take the first and second items etc...
 
+            \bigskip
             \begin{lstlisting}
 for i in range(2**len(items)):
         combinaisons.append([])
@@ -132,9 +139,11 @@ for i in range(2**len(items)):
             if (i >> j) % 2 == 1:
                 combinaisons[i].append(items[j])
             \end{lstlisting}
-
+            \bigskip
+            
             With this list, we check if the combinations of items fit in the knapsack. If they fit, we add them to the list of possible combinations:
 
+            \bigskip
             \begin{lstlisting}
 for combinaison in combinaisons:
         poids = 0
@@ -143,9 +152,13 @@ for combinaison in combinaisons:
         if poids <= capacity:
             combinaisonsPossibles.append(combinaison)
             \end{lstlisting}
+            \bigskip
+            
+            And finally, with this list containing the valid solutions, we check which combination of items has the highest value. If they have the same value, we add them to the list of possible combinations with the highest value. If they have a higher value, we empty the list of possible combinations with the highest value and we add the new combination. 
+            \newpage
+            If they have a lower value, we do nothing. We also update the highest value and the list of items that make up the highest value combination :
 
-            And finally, with this list containing the valid solutions, we check which combination of items has the highest value. If they have the same value, we add them to the list of possible combinations with the highest value. If they have a higher value, we empty the list of possible combinations with the highest value and we add the new combination. If they have a lower value, we do nothing. We also update the highest value and the list of items that make up the highest value combination :
-
+            \bigskip
             \begin{lstlisting}
 for combinaison in combinaisonsPossibles:
         valeur = 0
@@ -157,23 +170,155 @@ for combinaison in combinaisonsPossibles:
         elif valeur == valeurMax:
             combinaisonsPossiblesMax.append(combinaison)
             \end{lstlisting}
+            \bigskip
+            
+            We obtain the list of items with the highest value and return it with the execution time :
 
-            \newpage We obtain the list of items with the highest value and return it with the execution time :
-
+            \bigskip
             \begin{lstlisting}
 end_time = time.time()
 execution_time = end_time - start_time
     
 return combinaisonsPossiblesMax, execution_time
             \end{lstlisting}
+            \bigskip
             
         \subsubsection{Analyze}
 
-            The complexity is of $O(n*2^n)$ because we have as the "biggest" loop an $n$ loop in a $2^n$ loop, so $n*2^n$
-    
+            The complexity is of $O(n*2^n)$ because we have as the "biggest" loop an $n$ loop in a $2^n$ loop, so $n*2^n$\newline\newline
+            So it means that if we have 10 items, it will take $10,240$ operations to find the solution\newline
+            If we have 20 items, it will take $20,971,520$ operations to find the solution\newline
+            If we have 30 items, it will take $32,212,254,720$ operations to find the solution\newline
+            So it is very slow, I think it is not recommended to use it with more than 20 items, but it always gives the optimal solution
+
+    \newpage
     \subsection{Multidimensional Knapsack Problem}
 
-        flemme pour le moment :)
+        \subsubsection{Idea}
+            First of all, like the simple Knapsack Problem, we need an \emph{ItemMD} structure that will define an object that can go in the backpack. The structure is defined as follows:
+
+            \bigskip
+            \begin{lstlisting}
+class itemMD:
+    def __init__(self,pos,value,weight, ratio):
+        self.pos = pos # Position in the list of item
+        self.value = value # Value of the item
+        self.weight = weight # weight(vector) of the item for each dimension
+        self.ratio = ratio # List of ratio for each dimension
+            \end{lstlisting}
+            \bigskip
+
+            The structure has 4 fields, \emph{pos} which will indicate the position in a tree (useless in this problem), \emph{value} which will store the value of the object, \emph{weight} which will store the list of weight of the object for each dimension and \emph{ratio} which will store the ratio value/weight of the object for each dimensions (useless here).\newline
+
+            Then we have to create a new function to read the data from the datasets, because it is not the same structure as for the Simple Knapsack. This function will return :
+
+            \begin{itemize}
+                \item The list of ItemMD read and created
+                \item The number of dimension of the backpack
+                \item The list of "max weight" of each dimension
+                \item The optimal value to find, which is provided in the file
+            \end{itemize}
+
+            Now we just have to send the list of \emph{ItemMD}, the list of \emph{weight} for each dimensions and the number of \emph{dimension} to the \emph{Brute-Force-MD} algorithm.
+            
+        \newpage
+        \subsubsection{Algorithm}
+
+            The function is defined as follows:
+                \begin{itemize}
+                    \item It takes the list of itemMD, the list of capacities of the knapsacks and the number of dimensions as parameters.
+                    \item It returns the best value, the list of items that can fit in all the dimensions of the knapsack and the time of execution
+                    \item It returns an empty list if no solution is found
+                \end{itemize}
+
+            So we have 3 parameters for the function :
+
+            \bigskip
+            \begin{lstlisting}
+def bruteForceMD(itemMD, capacities, nbrDimensions):
+            \end{lstlisting}
+            \bigskip
+
+            At the beginning of the function, its the same than the Simple Knapsack, we will create 5 variables:
+            \begin{itemize}
+                \item \emph{start\_time} : Calculate the time of execution
+                \item \emph{combinaisons} : Create a list of all possible combinations of items
+                \item \emph{combinaisonsPossibles} : Create a list of all possible combinations of items that fit in the knapsack
+                \item \emph{combinaisonsPossiblesMax} : Create a list of all possible combinations of items that fit in the knapsack and that have the highest value
+                \item \emph{valeurMax} : We initialize the highest combination value to 0
+            \end{itemize}
+
+            \bigskip
+            \begin{lstlisting}
+start_time = time.time()
+combinaisons = []
+combinaisonsPossibles = []
+combinaisonsPossiblesMax = []
+valeurMax = 0
+            \end{lstlisting}
+            \bigskip
+
+            \newpage
+            Now we have to store all the possibilities, we use the same method as for the Simple Knapsack :
+
+            \bigskip
+            \begin{lstlisting}
+for i in range(2**len(items)):
+        combinaisons.append([])
+        for j in range(len(items)):
+            if (i >> j) % 2 == 1:
+                combinaisons[i].append(items[j])
+            \end{lstlisting}
+            \bigskip
+
+            This is where the algorithm will change compared to the previous one, we will put in the \emph{combinaisonsPossibles} list all the possibilities that fit in the backpack. Contrary to the previous algorithm that checked if the combination of objects fit in the backpack, here we will check that the list of objects fit not only in one dimension, but in the $d$ dimensions:
+
+            \bigskip
+            \begin{lstlisting}
+for combinaison in combinaisons:
+        poids = [0] * nbrDimensions
+        for item in combinaison:
+            for i in range(nbrDimensions):
+                poids[i] += item.weight[i]
+        if poids <= capacities:
+            combinaisonsPossibles.append(combinaison)
+            \end{lstlisting}
+            \bigskip
+
+            And finally, with this list containing the valid solutions, we will do as for the previous algorithm, keep only the combination(s) that have the highest value : 
+
+            \bigskip
+            \begin{lstlisting}
+for combinaison in combinaisonsPossibles:
+        valeur = 0
+        for item in combinaison:
+            valeur += item.value
+        if valeur > valeurMax:
+            valeurMax = valeur
+            combinaisonsPossiblesMax = [combinaison]
+        elif valeur == valeurMax:
+            combinaisonsPossiblesMax.append(combinaison)
+            \end{lstlisting}
+            \bigskip
+
+            We obtain the list of items with the highest value and return it with the execution time and the optimal value found :
+
+            \bigskip
+            \begin{lstlisting}
+end_time = time.time()
+execution_time = end_time - start_time
+
+return combinaisonsPossiblesMax, execution_time, valeurMax
+            \end{lstlisting}
+            \bigskip
+
+        \subsubsection{Analyze}
+
+            The complexity is of $O(n*2^n)$ because we have as the "biggest" loop an $n$ loop in a $2^n$ loop, so $n*2^n$\newline\newline
+            So it means that if we have 10 items, it will take $10,240$ operations to find the solution\newline
+            If we have 20 items, it will take $20,971,520$ operations to find the solution\newline
+            If we have 30 items, it will take $32,212,254,720$ operations to find the solution\newline
+            So it is very slow, I think it is not recommended to use it with more than 20 items, but it always gives the optimal solution
 
 \section{Branch and Bound Approach}
 
