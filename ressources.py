@@ -97,7 +97,7 @@ def fullLine(n):
     
 # Structure of an item for the multidimensional knapsack problem
 # The item is composed of :
-# 1] a list of value for each dimension
+# 1] the value of the item
 # 2] a list of weight for each dimension
 # 3] a list of ratio for each dimension
 # 4] a position in the list of item

@@ -1,0 +1,243 @@
+
+\documentclass[12pt]{article}
+\AddToHook{cmd/section/before}{\clearpage}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amscd}
+\usepackage{amsfonts}
+\usepackage{amstext}
+\usepackage{hyperref}
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+
+\begin{document}
+
+\title{Advanced Programming Report - Knapsack Problem}
+\author{Florian Doffemont - Jeoffrey Pereira - Jocelyn Hauf - Arthur Micol}
+\date{}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+
+    \subsection{About This Report}
+        This report is going to talk about, describe the Advanced Programming project that we have been given to do in groups of 4. The subject of the project is to implement the Knapsack Problem with different types of algorithms. The document will have as section the different types of algorithms that will be explained, shown, analyzed and compared with the others. Some sections will also have treated other problems (Multidimensional...). All external sources like datasets will be quoted in the last section (Sources)
+    
+    \subsection{Knapsack Problem}
+        The Knapsack problem consists in choosing the best combination of objects (which have a weight and a value) in order to have a maximum value in the backpack (which has a maximum weight not to exceed). It is a NP complete problem.
+    
+    \subsection{Multidimensional Knapsack Problem}
+        Here, the goal is the same as the simple Knapsack problem, with the difference that we have to manage not only one dimension of the backpack (the weight) but several dimensions (weight, volume, etc..), we can see it as a vector with n dimensions. So an object will have a value and n dimensions. It will be necessary to have the best combination of object to have the best value in the backpack without that the objects "overflow" of all the dimensions of the backpack. Of course, the "size" of all dimensions are predefined and should not be exceeded.
+    
+    \subsection{Multiple Knapsack Problem}
+        Here the problem consists in considering that one should not fill only one backpack, but several which have a different size. An object cannot be in several backpacks. So we have to find the best combination so that the value of the objects in the backpacks added together is maximum, without exceeding the capacity of the backpacks.
+
+\section{Brute-Force Approach}
+
+    \textbf{Author :} Florian Doffemont
+
+    \subsection{Definition}
+        The Brute-Force method consists in trying all possible combinations of a problem. For example, to crack a password, we try all possibilities (a, b, ... aa, ab...).
+
+        For the Knapsack problem, we will try all the possibilities of objects in the backpack.
+    
+    \subsection{Knapsack Problem}
+    
+        \subsubsection{Idea}
+            First of all, we need an \emph{Items} structure that will define an object that can go in the backpack. The structure is defined as follows:
+
+            \begin{lstlisting}
+class item:
+    def __init__(self, pos, value, weight):
+        self.pos = int(pos)
+        self.value = float(value)
+        self.weight = float(weight)
+        self.ratio = float(value) / weight
+            \end{lstlisting}
+            
+            The structure has 4 fields, \emph{pos} which will indicate the position in a tree (useless in this problem), \emph{value} which will store the value of the object, \emph{weight} which will store the weight of the object and \emph{ratio} which will store the ratio value/weight of the object (useless here).\newline
+
+            After that, we need a function to read the data sets (taken from the site: \emph{http://artemisa.unicauca.edu.co/~johnyortega/instances\_01\_KP/}).\newline
+
+            With this function we will store in a list of \emph{Items} the \emph{Items} read and created. We will at the same time, store the maximum size of the backpack.\newline
+
+            Now we just have to send the list of \emph{Items} and the maximum size of the backpack to the \emph{Brute-Force} algorithm.
+            
+        \subsubsection{Algorithm}
+        
+            The function is defined as follows:
+            \begin{itemize}
+                \item The function takes the list of items and the capacity of the knapsack as parameters.
+                \item It returns the list of items that are in the knapsack with the optimal value
+                \item It returns an empty list if no solution is found
+            \end{itemize}
+            
+            So we have 2 parameters for the function :
+
+            \begin{lstlisting}
+    def bruteForce(capacity, items):
+            \end{lstlisting}
+
+            At the beginning of the function, we will create 5 variables:
+            \begin{itemize}
+                \item \emph{start\_time} : Calculate the time of execution
+                \item \emph{combinaisons} : Create a list of all possible combinations of items
+                \item \emph{combinaisonsPossibles} : Create a list of all possible combinations of items that fit in the knapsack
+                \item \emph{combinaisonsPossiblesMax} : Create a list of all possible combinations of items that fit in the knapsack and that have the highest value
+                \item \emph{valeurMax} : We initialize the highest combination value to 0
+            \end{itemize}
+
+            \begin{lstlisting}
+    start_time = time.time()
+    combinaisons = []
+    combinaisonsPossibles = []
+    combinaisonsPossiblesMax = []
+    valeurMax = 0
+            \end{lstlisting}
+
+            Now you have to store all the possibilities (correct or not) in the \emph{combinaisons} list. We know that all possible combinations of items are $2^n$. We use the binary system to create all possible combinations of items. For example, if we have 3 items, we will have 8 possible combinations of items : 000, 001, 010, 011, 100, 101, 110, 111 ...\newline 
+            000 means that we don't take any item, 001 means that we take the first item, 010 means that we take the second item, 011 means that we take the first and second items etc...
+
+            \begin{lstlisting}
+for i in range(2**len(items)):
+        combinaisons.append([])
+        for j in range(len(items)):
+            if (i >> j) % 2 == 1:
+                combinaisons[i].append(items[j])
+            \end{lstlisting}
+
+            With this list, we check if the combinations of items fit in the knapsack. If they fit, we add them to the list of possible combinations:
+
+            \begin{lstlisting}
+for combinaison in combinaisons:
+        poids = 0
+        for item in combinaison:
+            poids += item.weight
+        if poids <= capacity:
+            combinaisonsPossibles.append(combinaison)
+            \end{lstlisting}
+
+            And finally, with this list containing the valid solutions, we check which combination of items has the highest value. If they have the same value, we add them to the list of possible combinations with the highest value. If they have a higher value, we empty the list of possible combinations with the highest value and we add the new combination. If they have a lower value, we do nothing. We also update the highest value and the list of items that make up the highest value combination :
+
+            \begin{lstlisting}
+for combinaison in combinaisonsPossibles:
+        valeur = 0
+        for item in combinaison:
+            valeur += item.value
+        if valeur > valeurMax:
+            valeurMax = valeur
+            combinaisonsPossiblesMax = [combinaison]
+        elif valeur == valeurMax:
+            combinaisonsPossiblesMax.append(combinaison)
+            \end{lstlisting}
+
+            \newpage We obtain the list of items with the highest value and return it with the execution time :
+
+            \begin{lstlisting}
+end_time = time.time()
+execution_time = end_time - start_time
+    
+return combinaisonsPossiblesMax, execution_time
+            \end{lstlisting}
+            
+        \subsubsection{Analyze}
+
+            The complexity is of $O(n*2^n)$ because we have as the "biggest" loop an $n$ loop in a $2^n$ loop, so $n*2^n$
+    
+    \subsection{Multidimensional Knapsack Problem}
+
+        flemme pour le moment :)
+
+\section{Branch and Bound Approach}
+
+    \textbf{Author :} Jeoffrey Pereira
+
+    \subsection{Definition}
+    
+    \subsection{Knapsack Problem}
+
+\section{Three Greedy Approach}
+
+    \textbf{Author :} Jocelyn Hauf
+
+    \subsection{Definition}
+    
+    \subsection{Knapsack Problem - Greedy 1}
+    
+    \subsection{Knapsack Problem - Greedy 2}
+    
+    \subsection{Knapsack Problem - Greedy 3}
+
+\section{Dynamic Programming Approach}
+
+    \textbf{Author :} Arthur Micol
+
+    \subsection{Definition}
+    
+    \subsection{Knapsack Problem}
+
+\section{Fully Polynomial Time Approximation Scheme Approach}
+
+    \textbf{Author :} 
+
+    \subsection{Definition}
+    
+    \subsection{Knapsack Problem}
+
+\section{Randomized Approach}
+
+    \textbf{Author :}
+
+    \subsection{Definition}
+    
+    \subsection{Knapsack Problem}
+
+\section{Ant Colony Approach}
+
+    \textbf{Author :}
+
+    \subsection{Definition}
+    
+    \subsection{Knapsack Problem}
+
+\section{Personal Approach}
+
+    \textbf{Author :}
+
+    \subsection{Definition}
+    
+    \subsection{Knapsack Problem}
+
+\section{Conclusion}
+
+\end{document}
+
+
+
