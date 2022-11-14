@@ -50,19 +50,21 @@ def randomSolution(nbrItems, capacity, items):
     while True:
         for item in items:
             if item.ratio >= criteria and weightSolution(solution) + item.weight <= capacity:
+                # We add the item in the solution
                 solution.append(item)
                 # We remove the item from the list of items
                 items.remove(item)
+            # If the weight of the solution is higher than the weight of the knapsack, or the number of items in the solution is equal to the number of items, we break the loop.
             if weightSolution(solution) >= capacity or len(solution) == nbrItems:
                 break
-        if weightSolution(solution) >= capacity or len(solution) == nbrItems:
-            break   
+        # If we cannot add more items in the knapsack because of the weight, we break the loop.
         nbrCannotAdd = 0
         for item in items:
             if weightSolution(solution) + item.weight > capacity:
                 nbrCannotAdd += 1
         if nbrCannotAdd == len(items):
-            break         
+            break
+        # We decrease the criteria by 1%
         criteria = criteria - (criteria * 0.01)
         
     # We calculate the time of execution of the algorithm
