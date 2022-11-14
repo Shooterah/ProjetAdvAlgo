@@ -22,7 +22,7 @@ nbrItems, capacity, items = ressources.readFileCreateList("Data/low-dimensional/
 
 
 # We create a function that will return a random solution, for the distribution we will use the ratio of the value of the item to the weight of the item. The function take in parameters the number of items, the weight of the knapsack, and the list of items. The function return the solution and the time to find the solution. (The ratio of the item is stocked in the variable item.ratio)
-def randomSolution(nbrItems, capacity, items):
+def randomSolution(capacity, items):
 
     # We calculate the time of execution of the algorithm
     start_time = time.time()
@@ -95,7 +95,7 @@ def weightSolution(solution):
     return weight
 
 # We test the algorithm
-solution, execution_time = randomSolution(nbrItems, capacity, items)
+solution, execution_time = randomSolution(capacity, items)
 
 for item in solution:
     item.printItem()
