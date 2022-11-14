@@ -22,6 +22,8 @@ nbrItems, capacity, items = ressources.readFileCreateList("Data/low-dimensional/
 
 
 # We create a function that will return a random solution, for the distribution we will use the ratio of the value of the item to the weight of the item. The function take in parameters the number of items, the weight of the knapsack, and the list of items. The function return the solution and the time to find the solution. (The ratio of the item is stocked in the variable item.ratio)
+# For the best case, its complexity is O(n) because we have a loop that will run n times. And all items have the good criteria and can fit in the knapsack. So, we will have a solution with all items.
+# For the worst case, its complexity is O(n*(n-1)) because we have a loop that will run n times and this loop can run n-1 times (with the decrementation of the criteria).
 def randomSolution(capacity, items):
 
     # We calculate the time of execution of the algorithm
@@ -39,8 +41,7 @@ def randomSolution(capacity, items):
     criteria = criteria + (criteria * 0.01)
 
     
-    # We shuffle the list of items
-    random.shuffle(items)
+    
     
     # We create a loop that will select the items that have a ratio higher or equal to the criteria and that can fit in the knapsack ans stock them in the solution list.
     # We stop the loop if:
