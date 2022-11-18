@@ -206,6 +206,46 @@ def greedy3(liItem, n, wMax):
     return vTot, res, exec_time
 
 
+#
+#  +------------------+
+#  | Shared functions |
+#  +------------------+
+#
+
+# Can be use by another program
+# idGreedy : 
+def greedy(path, idGreedy):
+
+    # Check if the path is correct
+    try :
+        # Stock values of the file
+        n, wMax, liItem = ressources.readFileCreateList(path)
+    except :
+        error()
+        print("\tThe path doesn't exist")
+        exitProg()
+
+    # Result with Greedy 1 :
+    if (idGreedy == 1):
+        vTot, res, tExec = greedy1(liItem, n ,wMax)
+
+    # Result with Greedy 2 :
+    elif (idGreedy == 2):
+        vTot, res, tExec = greedy2(liItem, n ,wMax)
+
+    # Result with Greedy 3 :
+    elif (idGreedy == 3):
+        vTot, res, tExec = greedy3(liItem, n ,wMax)
+
+    else :
+        error()
+        print("\tThe idGreedy doesn't exist (1, 2 or 3)")
+        exitProg()
+    
+    return vTot, res, tExec
+
+
+
 
 
 #
