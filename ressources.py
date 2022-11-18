@@ -47,11 +47,11 @@ class Node:
 
         else :
             if  self.Left_children is None:
-                self.Left_children = Node(newdata,level+1,CumValue+getattr(getattr(self,"data"),"value"),self.CumWeight+getattr(getattr(self,"data"),"weight"),Node(None,level+2,getattr(newdata,"value")+self.CumValue+getattr(getattr(self,"data"),"value"),getattr(newdata,"weight")+self.CumWeight+getattr(getattr(self,"data"),"weight"),None,None),Node(None,level+2,self.CumValue,self.CumWeight,None,None))
-            else : self.Left_children.addNode(newdata,level+1,CumValue+getattr(getattr(self,"data"),"value"),self.CumWeight+getattr(getattr(self,"data"),"weight"),Node(None,level+2,getattr(newdata,"value")+self.CumValue+getattr(getattr(self,"data"),"value"),getattr(newdata,"weight")+self.CumWeight+getattr(getattr(self,"data"),"weight"),None,None),Node(None,level+2,self.CumValue,self.CumWeight,None,None))
+                self.Left_children = Node(newdata,level+1,CumValue+self.data.value,self.CumWeight+self.data.weight,Node(None,level+2,newdata.value+self.CumValue+self.data.value,newdata.value+self.CumWeight+self.data.weight,None,None),Node(None,level+2,self.CumValue+self.data.value,self.CumWeight+self.data.weight,None,None))
+            else : self.Left_children.addNode(newdata,level+1,CumValue+self.data.value,self.CumWeight+self.data.weight,Node(None,level+2,newdata.value+self.CumValue+self.data.value,newdata.weight+self.CumWeight+self.data.weight,None,None),Node(None,level+2,self.CumValue+self.data.value,self.CumWeight+self.data.weight,None,None))
             if self.Right_children is None:
-                self.Right_children = Node(newdata,level+1,self.CumValue,self.CumWeight,Node(None,level+2,getattr(newdata,"value")+self.CumValue+getattr(getattr(self,"data"),"value"),getattr(newdata,"weight")+self.CumWeight+getattr(getattr(self,"data"),"weight"),None,None),Node(None,level+2,self.CumValue,self.CumWeight,None,None))
-            else : self.Right_children.addNode(newdata,level+1,self.CumValue,self.CumWeight,Node(None,level+2,getattr(newdata,"value")+self.CumValue+getattr(getattr(self,"data"),"value"),getattr(newdata,"weight")+self.CumWeight+getattr(getattr(self,"data"),"weight"),None,None),Node(None,level+2,self.CumValue,self.CumWeight,None,None))
+                self.Right_children = Node(newdata,level+1,self.CumValue,self.CumWeight,Node(None,level+2,newdata.value+self.CumValue,newdata.weight+self.CumWeight,None,None),Node(None,level+2,self.CumValue,self.CumWeight,None,None))
+            else : self.Right_children.addNode(newdata,level+1,self.CumValue,self.CumWeight,Node(None,level+2,newdata.value+self.CumValue,newdata.weight+self.CumWeight,None,None),Node(None,level+2,self.CumValue,self.CumWeight,None,None))
 
 # Print the tree with a level distinction
    
