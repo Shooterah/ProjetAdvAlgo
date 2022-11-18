@@ -179,7 +179,7 @@ def greedy3(liItem, n, wMax):
     
     # Copy the initial list 
     sortR = liItem.copy()
-    # Sort a list by weight  
+    # Sort a list by ratios  
     sortR.sort(key=lambda x: x.ratio, reverse = True)
     
     #Display sort list
