@@ -19,6 +19,8 @@
 
 import sys
 import ressources
+import time
+
 
 
 #
@@ -75,6 +77,9 @@ def disItLi(itemLi):
 # Use a dataset with values are sort in decreasing order
 # Keep all the first values iteratievly
 def greedy1(liItem, n, wMax):
+
+    # Stock the time when function start
+    start_time = time.time()
     
     # Init list of resultat
     res = [] 
@@ -103,13 +108,22 @@ def greedy1(liItem, n, wMax):
             vTot += sortV[i].value
         # Increase iterator 
         i += 1
-    return vTot, res
+
+    # Stock timer now
+    end_time = time.time()
+
+    exec_time = end_time - start_time
+
+    return vTot, res, exec_time
 
 
 # Greedy 2 :
 # Use a dataset with weights are sort in increasing order
 # Keep all the first values iteratievly
 def greedy2(liItem, n, wMax):
+
+    # Stock the time when function start
+    start_time = time.time()
     
     # Init list of resultat
     res = [] 
@@ -138,7 +152,13 @@ def greedy2(liItem, n, wMax):
             vTot += sortW[i].value
         # Increase iterator 
         i += 1
-    return vTot, res
+
+    # Stock timer now
+    end_time = time.time()
+
+    exec_time = end_time - start_time
+    
+    return vTot, res, exec_time
 
 
 
@@ -146,6 +166,9 @@ def greedy2(liItem, n, wMax):
 # Use a dataset with ratio are sort in decreasing order
 # Keep all the first values iteratievly
 def greedy3(liItem, n, wMax):
+
+    # Stock the time when function start
+    start_time = time.time()
     
     # Init list of resultat
     res = [] 
@@ -174,7 +197,13 @@ def greedy3(liItem, n, wMax):
             vTot += sortR[i].value
         # Increase iterator 
         i += 1
-    return vTot, res
+
+    # Stock timer now
+    end_time = time.time()
+
+    exec_time = end_time - start_time
+
+    return vTot, res, exec_time
 
 
 
@@ -184,6 +213,8 @@ def greedy3(liItem, n, wMax):
 #  | Main |
 #  +------+
 #
+
+
 
 
 # Verify if the nb of arguments is correct
@@ -232,23 +263,29 @@ except :
 # Result with Greedy 1 ( option : 'a' or 'v') :
 if (opt == 'a' or opt == 'v'):
     print(UNDERLINE + BOLD + "\nEvaluation with greedy algorithm using values :\n" + CEND)
-    vTot, res = greedy1(liItem, n ,wMax)
+    vTot, res, tExec = greedy1(liItem, n ,wMax)
     print("\nMaximum value result : " + CBLUE + BOLD + str(vTot) + CEND)
     print("List of result (From the initial file): " + CBLUE + BOLD + str(res) + CEND)
+    print("Time of execution :" + CGREEN + str(tExec) + CEND + "s")
+
     
 # Result with Greedy 2 ( option : 'a' or 'w') : 
 if (opt == 'a' or opt == 'w'):
     print(UNDERLINE + BOLD + "\nEvaluation with greedy algorithm using weights :\n" + CEND)
-    vTot, res = greedy2(liItem, n ,wMax)
+    vTot, res, tExec = greedy2(liItem, n ,wMax)
     print("\nMaximum value result : " + CBLUE + BOLD + str(vTot) + CEND)
     print("List of result (From the initial file): " + CBLUE + BOLD + str(res) + CEND)
+    print("Time of execution :" + CGREEN + str(tExec) + CEND + "s")
+
 
 # Result with Greedy 3 ( option : 'a' or 'r') :
 if (opt == 'a' or opt == 'r'):
     print(UNDERLINE + BOLD + "\nEvaluation with greedy algorithm using ratios :\n" + CEND)
-    vTot, res = greedy3(liItem, n ,wMax)
+    vTot, res, tExec = greedy3(liItem, n ,wMax)
     print("\nMaximum value result : " + CBLUE + BOLD + str(vTot) + CEND)
     print("List of result (From the initial file): " + CBLUE + BOLD + str(res) + CEND)
+    print("Time of execution :" + CGREEN + str(tExec) + CEND + "s")
+
   
 print(UNDERLINE + "\nInitial parameters :" + CEND)  
 print("  n    : " + BOLD + str(n) + CEND)
