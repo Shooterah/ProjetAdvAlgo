@@ -61,6 +61,7 @@ def knapsack(tree,capacity,best_Value,best_Weight,best_Combination,partial_Combi
             partial_Weight += tree.data.weight
             partial_Value += tree.data.value
             best_Combination,best_Value,best_Weight  = knapsack(tree.Left_children,capacity,best_Value,best_Weight,best_Combination,partial_Combination,partial_Weight,partial_Value)
+            partial_Combination.pop()
     if tree.Right_children != None and tree.Right_children.MaxValue > best_Value:
         if tree.data != None:
             best_Combination,best_Value,best_Weight  = knapsack(tree.Right_children,capacity,best_Value,best_Weight,best_Combination,partial_Combination,partial_Weight,partial_Value)
@@ -71,7 +72,7 @@ def knapsack(tree,capacity,best_Value,best_Weight,best_Combination,partial_Combi
 
 # Here we get the number of items the knapsack capacity and a list of items composed of positioning in the texte,value and weight. 
 start = time.time()
-nbrItems, capacity, items = ressources.readFileCreateList("Data/low-dimensional/f8_l-d_kp_23_10000.txt")
+nbrItems, capacity, items = ressources.readFileCreateList("Data/low-dimensional/f4_l-d_kp_4_11.txt")
 items.sort(key=lambda x: x.ratio, reverse = True)
 # There we add each item of the list inside the tree and compute the value of all items.
 for i in items:
@@ -82,7 +83,9 @@ for data in items:
 best_Combination,best_Value,best_Weight = create_Best_Combination(items)
 
 
-best_Combination,best_Value,best_Weight = knapsack(Tree,capacity,15,best_Weight,best_Combination,partial_Combination,partial_Weight,partial_Value)
+best_Combination,best_Value,best_Weight = knapsack(Tree,capacity,best_Value,best_Weight,best_Combination,partial_Combination,partial_Weight,partial_Value)
 start = time.time() - start
 print(start)
 print("Best value: ",best_Value)
+for i in best_Combination:
+    print(i.value,i.weight)
