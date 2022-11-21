@@ -13,17 +13,23 @@
 
 from traceback import print_tb
 import ressources
+import time
+
 
 #---------------------------------------------------------VARIABLE--------------------------------------------------------------------#
 
 # This variable is used to know the Value of all items the capacity of the bag and the number of items.
-maxValue = 0
 capacity = 0
 nbrItems = 0
+maxValue = 0
 # The initalisation of the tree use to found the best items set.
 Tree = ressources.Node(None,None,None,None,None,None)
 # The Combination list with the best Value
 best_Combination = []
+partial_Combination = []
+partial_Weight = 0
+partial_Value=0
+
 
 #----------------------------------------------------USEFULL-FUNCTION-----------------------------------------------------------------#
 
@@ -31,68 +37,55 @@ best_Combination = []
 # Then we can use this best combination list and best value to compare it in our main algorithm for the first loop
 
 def create_Best_Combination (items):
-    current_Weight = 0
+    best_Weight = 0
     best_Value=0
     i = 0
-    while (current_Weight + getattr(items[i],'weight')) < capacity:
+    while (best_Weight + getattr(items[i],'weight')) < capacity:
         best_Combination.append(items[i])
-        current_Weight += getattr(items[i],'weight')
+        best_Weight += getattr(items[i],'weight')
         best_Value += getattr(items[i],'value')
         i = i+1
 
-    return best_Combination,best_Value,current_Weight
-
-# This fonction generate an empty solution
-
-def create_Partial_Combination():
-    partial_Weight = 0
-    partial_Value=0
-    partial_Combination = []
-
-    return partial_Combination,partial_Value,partial_Weight
-
-
-# In Progresse
-
-def KnapSack(best_Combination,best_Value,best_Weight,partial_Combination,partial_Value,partial_Weight,Tree):
-
-    if partial_Value >= best_Value :
-        best_Value = partial_Value
-        best_Weight = partial_Weight
-        best_Combination = partial_Combination[:]
-    else:
-        if  getattr(Tree,"Right_children") is not None and getattr(Tree,"Left_children") is not None:
-            if partial_Weight + getattr(getattr(Tree,"data"),"weight") <= capacity:
-                partial_Combination,partial_Value,partial_Weight = KnapSack(best_Combination,best_Value,best_Weight,partial_Combination,partial_Value,partial_Weight,getattr(Tree,"Right_children"))
-                item = ressources.item(getattr(getattr(Tree,"data"),"pos"),getattr(getattr(Tree,"data"),"value"),getattr(getattr(Tree,"data"),"weight"))
-                partial_Combination.append(item)
-                partial_Value = partial_Value + getattr(item,"value")
-                partial_Weight = partial_Weight + getattr(item,"weight")
-                partial_Combination,partial_Value,partial_Weight = KnapSack(best_Combination,best_Value,best_Weight,partial_Combination,partial_Value,partial_Weight,getattr(Tree,"Left_children"))
-            else : 
-                item = ressources.item(getattr(getattr(Tree,"data"),"pos"),getattr(getattr(Tree,"data"),"value"),getattr(getattr(Tree,"data"),"weight"))
-                partial_Combination.append(item)
-                partial_Value = partial_Value + getattr(item,"value")
-                partial_Weight = partial_Weight + getattr(item,"weight")
-                partial_Combination,partial_Value,partial_Weight = KnapSack(best_Combination,best_Value,best_Weight,partial_Combination,partial_Value,partial_Weight,getattr(Tree,"Left_children"))
-        return partial_Combination,partial_Value,partial_Weight
     return best_Combination,best_Value,best_Weight
-            
 
+def knapsack(tree,capacity,best_Value,best_Weight,best_Combination,partial_Combination,partial_Weight,partial_Value):
 
-
-
-
+    if tree.CumValue > best_Value and tree.CumWeight <= capacity:
+        best_Value = tree.CumValue
+        best_Weight = tree.CumWeight
+        best_Combination = partial_Combination.copy()
+    # Parcourir l'arbre
+    if tree.Left_children != None:
+        if tree.data != None:
+            partial_Combination.append(tree.data)
+            partial_Weight += tree.data.weight
+            partial_Value += tree.data.value
+            best_Combination,best_Value,best_Weight  = knapsack(tree.Left_children,capacity,best_Value,best_Weight,best_Combination,partial_Combination,partial_Weight,partial_Value)
+    if tree.Right_children != None and tree.Right_children.MaxValue > best_Value:
+        if tree.data != None:
+            partial_Combination.append(tree.data)
+            partial_Weight += tree.data.weight
+            partial_Value += tree.data.value
+        best_Combination,best_Value,best_Weight  = knapsack(tree.Right_children,capacity,best_Value,best_Weight,best_Combination,partial_Combination,partial_Weight,partial_Value)
+     
+    return best_Combination,best_Value,best_Weight 
+        
 #-----------------------------------------------------------MAIN----------------------------------------------------------------------#
 
 # Here we get the number of items the knapsack capacity and a list of items composed of positioning in the texte,value and weight. 
-nbrItems, capacity, items = ressources.readFileCreateList("Data/low-dimensional/f3_l-d_kp_4_20.txt")
-
+start = time.time()
+nbrItems, capacity, items = ressources.readFileCreateList("Data/low-dimensional/f8_l-d_kp_23_10000.txt")
+items.sort(key=lambda x: x.ratio, reverse = True)
 # There we add each item of the list inside the tree and compute the value of all items.
+for i in items:
+    maxValue += i.value
 for data in items:
-    maxValue += getattr(data,"value")
+    ressources.Node.addNode(Tree,data,0,maxValue,0,None,None)
 
-for data in items:
-    ressources.Node.addNode(Tree,data,0,0,0,None,None)
+best_Combination,best_Value,best_Weight = create_Best_Combination(items)
 
-ressources.Node.printTree(Tree)
+
+best_Combination,best_Value,best_Weight = knapsack(Tree,capacity,15,best_Weight,best_Combination,partial_Combination,partial_Weight,partial_Value)
+start = time.time() - start
+print(start)
+print("Best value: ",best_Value)

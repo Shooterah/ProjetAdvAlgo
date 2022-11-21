@@ -25,33 +25,33 @@ class item:
     # 5] and 6] the lef and right children who are the same but the left is used for a selected item and the right for an unselected one.
 
 class Node:
-    def __init__(self,data,level,CumValue,CumWeight,Left_children,Right_children,):
+    def __init__(self,data,CumValue, MaxValue,CumWeight,Left_children,Right_children,):
         self.data = data
-        self.level = level
-        self.CumValue = CumValue
         self.CumWeight = CumWeight
+        self.CumValue = CumValue
+        self.MaxValue = MaxValue
         self.Left_children = Left_children
         self.Right_children = Right_children
 
 # This fonction help us to add node in our tree at the folowing of already placed nodes.
-# We don't put data on leaf but we add the level , the Cumulated Value  and the Cumulated Weight
+# We don't put data on leaf but we add the Cumulated Value  and the Cumulated Weight
 
-    def addNode(self,newdata,level,CumValue,CumWeight,Left_children,Right_children):
+    def addNode(self,newdata,CumValue,MaxValue,CumWeight,Left_children,Right_children):
         if self.data == None:
             self.data = newdata
-            self.level = level
             self.CumWeight = CumWeight
             self.CumValue = CumValue
+            self.MaxValue = MaxValue
             self.Left_children = Left_children
             self.Right_children = Right_children
 
         else :
             if  self.Left_children is None:
-                self.Left_children = Node(newdata,level+1,CumValue+self.data.value,self.CumWeight+self.data.weight,Node(None,level+2,newdata.value+self.CumValue+self.data.value,newdata.value+self.CumWeight+self.data.weight,None,None),Node(None,level+2,self.CumValue+self.data.value,self.CumWeight+self.data.weight,None,None))
-            else : self.Left_children.addNode(newdata,level+1,CumValue+self.data.value,self.CumWeight+self.data.weight,Node(None,level+2,newdata.value+self.CumValue+self.data.value,newdata.weight+self.CumWeight+self.data.weight,None,None),Node(None,level+2,self.CumValue+self.data.value,self.CumWeight+self.data.weight,None,None))
+                self.Left_children = Node(newdata,CumValue+self.data.value,MaxValue,self.CumWeight+self.data.weight,Node(None,newdata.value+self.CumValue+self.data.value,MaxValue,newdata.value+self.CumWeight+self.data.weight,None,None),Node(None,self.CumValue+self.data.value,MaxValue-self.data.value,self.CumWeight+self.data.weight,None,None))
+            else : self.Left_children.addNode(newdata,CumValue+self.data.value,MaxValue,self.CumWeight+self.data.weight,Node(None,newdata.value+self.CumValue+self.data.value,MaxValue,newdata.weight+self.CumWeight+self.data.weight,None,None),Node(None,self.CumValue+self.data.value,MaxValue-self.data.value,self.CumWeight+self.data.weight,None,None))
             if self.Right_children is None:
-                self.Right_children = Node(newdata,level+1,self.CumValue,self.CumWeight,Node(None,level+2,newdata.value+self.CumValue,newdata.weight+self.CumWeight,None,None),Node(None,level+2,self.CumValue,self.CumWeight,None,None))
-            else : self.Right_children.addNode(newdata,level+1,self.CumValue,self.CumWeight,Node(None,level+2,newdata.value+self.CumValue,newdata.weight+self.CumWeight,None,None),Node(None,level+2,self.CumValue,self.CumWeight,None,None))
+                self.Right_children = Node(newdata,self.CumValue,MaxValue-self.data.value,self.CumWeight,Node(None,newdata.value+self.CumValue,MaxValue-self.data.value,newdata.weight+self.CumWeight,None,None),Node(None,self.CumValue,MaxValue-(self.data.value-newdata.value),self.CumWeight,None,None))
+            else : self.Right_children.addNode(newdata,self.CumValue,MaxValue-self.data.value,self.CumWeight,Node(None,newdata.value+self.CumValue,MaxValue-self.data.value,newdata.weight+self.CumWeight,None,None),Node(None,self.CumValue,MaxValue-(self.data.value-newdata.value),self.CumWeight,None,None))
 
 # Print the tree with a level distinction
    
@@ -64,7 +64,7 @@ class Node:
         if self.data == None:
             print(tab+"Empty"+" L: "+str(self.level)+" CV: "+str(self.CumValue)+" CW: "+str(self.CumWeight))
         else:
-            print(str(tab)+str(item.printItemTree(self.data))+" L: "+str(self.level)+" CV: "+str(self.CumValue)+" CW: "+str(self.CumWeight))
+            print(str(tab)+str(item.printItemTree(self.data))+" CV: "+str(self.CumValue)+" CW: "+str(self.CumWeight) + " MV: " + str(self.MaxValue))
             if self.Left_children:
                 self.Left_children.printTree()
             if self.Right_children:
