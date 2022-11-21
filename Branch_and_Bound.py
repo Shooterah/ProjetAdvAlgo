@@ -63,10 +63,7 @@ def knapsack(tree,capacity,best_Value,best_Weight,best_Combination,partial_Combi
             best_Combination,best_Value,best_Weight  = knapsack(tree.Left_children,capacity,best_Value,best_Weight,best_Combination,partial_Combination,partial_Weight,partial_Value)
     if tree.Right_children != None and tree.Right_children.MaxValue > best_Value:
         if tree.data != None:
-            partial_Combination.append(tree.data)
-            partial_Weight += tree.data.weight
-            partial_Value += tree.data.value
-        best_Combination,best_Value,best_Weight  = knapsack(tree.Right_children,capacity,best_Value,best_Weight,best_Combination,partial_Combination,partial_Weight,partial_Value)
+            best_Combination,best_Value,best_Weight  = knapsack(tree.Right_children,capacity,best_Value,best_Weight,best_Combination,partial_Combination,partial_Weight,partial_Value)
      
     return best_Combination,best_Value,best_Weight 
         
