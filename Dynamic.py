@@ -3,6 +3,9 @@ import ressources
 # Function Dynamic (be care u can only use file where the weight isn't a float)
 # O(nW)time and O(nW)space
 
+# not really polynomial(runtime grows as inpout size grows, problem of space complexity)
+# add dynamic top and down
+
 # Function Dynamic for the initialisation of the table
 
 
@@ -46,8 +49,8 @@ def DynamicSearchSolution(Table, restWeight, nPos, knapsack, items):
 #----#
 # Here we create the items that we will use in the knapsack problem and we add them to a list of items
 nbrItems, capacity, items = ressources.readFileCreateList(
-    #    "Data/low-dimensional/f8_l-d_kp_23_10000.txt")
-    "Data/low-dimensional/test_arthur.txt")
+    "Data/low-dimensional/f8_l-d_kp_23_10000.txt")
+# "Data/low-dimensional/test_arthur.txt")
 
 # add condition if capacity is 0
 
