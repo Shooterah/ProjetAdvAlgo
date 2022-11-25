@@ -114,7 +114,7 @@ problemType.trace("w", lambda *args: changeColor())
 
 # create 2 vertical frames that take boyh 50% of the window
 frame_left = Frame(window, bg="#528860", bd=1, relief=SUNKEN)
-frame_left.pack(side=LEFT, fill=BOTH, expand=YES)
+frame_left.pack(side=LEFT, fill=BOTH)
 
 frame_right = Frame(window, bg="#8BC49A", bd=1, relief=SUNKEN)
 frame_right.pack(side=RIGHT, fill=BOTH, expand=YES)
@@ -122,7 +122,7 @@ frame_right.pack(side=RIGHT, fill=BOTH, expand=YES)
 # label for file name
 fnleft = Label(frame_left, text="Select the file to solve :",
                bg="#207436", fg="black", font=25)
-fnleft.grid(row=0, column=0, rowspan=2, columnspan=5, sticky=NSEW)
+fnleft.grid(row=0, column=0, rowspan=2, columnspan=1, sticky=NSEW)
 
 # Mettre la liste des fichiers dans un menu déroulant de taille égalent à la taille du label fnleft et collé adroite de celle-ci.
 # Si la variable problemType est égale à "simple", on affiche les fichiers du dossier "Data/low-dimensional"
@@ -141,7 +141,7 @@ fnright = StringVar()
 # create a menu to select the file name
 fnright.set(files[0])
 fnrightMenu = OptionMenu(frame_left, fnright, *files)
-fnrightMenu.grid(row=0, column=5, rowspan=2, columnspan=5, sticky=NSEW)
+fnrightMenu.grid(row=0, column=1, rowspan=2, columnspan=2, sticky=NSEW)
 
 # Change the list of files in the menu when the variable problemType is updated
 
@@ -163,53 +163,54 @@ def changeFiles():
 problemType.trace("w", lambda *args: changeFiles())
 
 
-# determine a grid of 13*13 in the left frame
+# determine a grid of 13*7 in the left frame
 for i in range(13):
-    frame_left.columnconfigure(i, weight=1)
     frame_left.rowconfigure(i, weight=1)
+for i in range(7):
+    frame_left.columnconfigure(i, weight=1)
 
 
 # create 11 buttons in the left frame and each for one row and all columns
 # call brute force
 button1 = Button(frame_left, text="Brute Force",
                  bg="#8BC49A", fg="black", bd=1, command=callBruteForce)
-button1.grid(row=2, column=0, columnspan=13, sticky=NSEW)
+button1.grid(row=3, column=0, columnspan=3, sticky=NSEW)
 
 button2 = Button(frame_left, text="Greedy Value",
                  bg="#8BC49A", fg="black", bd=1, command=callgreedyv)
-button2.grid(row=3, column=0, columnspan=13, sticky=NSEW)
+button2.grid(row=4, column=0, columnspan=3, sticky=NSEW)
 
 button3 = Button(frame_left, text="Greedy Weight",
                  bg="#8BC49A", fg="black", bd=1, command=callgreedyw)
-button3.grid(row=4, column=0, columnspan=13, sticky=NSEW)
+button3.grid(row=5, column=0, columnspan=3, sticky=NSEW)
 
 button4 = Button(frame_left, text="Greedy Ratio",
                  bg="#8BC49A", fg="black", bd=1, command=callgreedyr)
-button4.grid(row=5, column=0, columnspan=13, sticky=NSEW)
+button4.grid(row=6, column=0, columnspan=3, sticky=NSEW)
 
 button5 = Button(frame_left, text="Dynamic", bg="#8BC49A",
                  fg="black", bd=1, command=callDynamic)
-button5.grid(row=6, column=0, columnspan=13, sticky=NSEW)
+button5.grid(row=7, column=0, columnspan=3, sticky=NSEW)
 
 button6 = Button(frame_left, text="Branch and Bound",
                  bg="#8BC49A", fg="black", bd=1, command=callBranchAndBound)
-button6.grid(row=7, column=0, columnspan=13, sticky=NSEW)
+button6.grid(row=8, column=0, columnspan=3, sticky=NSEW)
 
 button7 = Button(frame_left, text="Fully polynomial time",
                  bg="#8BC49A", fg="black", bd=1)
-button7.grid(row=8, column=0, columnspan=13, sticky=NSEW)
+button7.grid(row=9, column=0, columnspan=3, sticky=NSEW)
 
 button8 = Button(frame_left, text="Randomized approach",
                  bg="#8BC49A", fg="black", bd=1)
-button8.grid(row=9, column=0, columnspan=13, sticky=NSEW)
+button8.grid(row=10, column=0, columnspan=3, sticky=NSEW)
 
 button9 = Button(frame_left, text="Ant colony",
                  bg="#8BC49A", fg="black", bd=1)
-button9.grid(row=10, column=0, columnspan=13, sticky=NSEW)
+button9.grid(row=11, column=0, columnspan=3, sticky=NSEW)
 
 button10 = Button(frame_left, text="Personnal algorithm",
                   bg="#8BC49A", fg="black", bd=1)
-button10.grid(row=11, column=0, columnspan=13, sticky=NSEW)
+button10.grid(row=12, column=0, columnspan=3, sticky=NSEW)
 
 
 # determine a grid of 12*12 in the right frame
@@ -218,55 +219,22 @@ for i in range(12):
     frame_right.rowconfigure(i, weight=1)
 
 # creation of the title
-title1 = Label(frame_right, text="Maximum Value",
+title1 = Label(frame_left, text="Maximum Value",
                bg="#207436", fg="black", bd=1, relief=RIDGE, font=25)
-title1.grid(row=0, column=0, rowspan=2, columnspan=7, sticky=NSEW)
+title1.grid(row=0, column=3, rowspan=2, columnspan=2, sticky=NSEW)
 
-title2 = Label(frame_right, text="Time", bg="#207436",
+title2 = Label(frame_left, text="Time of algorithme", bg="#207436",
                fg="black", bd=1, relief=RIDGE, font=25)
-title2.grid(row=0, column=7, rowspan=2, columnspan=6, sticky=NSEW)
+title2.grid(row=0, column=5, rowspan=2, columnspan=2, sticky=NSEW)
 
 
 # Create 11 label for the row 2 to 12 and that take all column
-label1 = Label(frame_right, text="",
-               bg="#528860", fg="white", bd=1, relief=SUNKEN)
-label1.grid(row=2, column=0, columnspan=7, sticky=NSEW)
+for i in range (10):
+    Label(frame_left, text="", bg="#207436", fg="black", bd=1, relief=RIDGE).grid(
+        row=i+3, column=3, columnspan=2, sticky=NSEW)
 
-label2 = Label(frame_right, text=" ", bg="#528860",
-               fg="white", bd=1, relief=SUNKEN)
-label2.grid(row=3, column=0, columnspan=7, sticky=NSEW)
-
-label3 = Label(frame_right, text=" ", bg="#528860",
-               fg="white", bd=1, relief=SUNKEN)
-label3.grid(row=4, column=0, columnspan=7, sticky=NSEW)
-
-label4 = Label(frame_right, text=" ", bg="#528860",
-               fg="white", bd=1, relief=SUNKEN)
-label4.grid(row=5, column=0, columnspan=7, sticky=NSEW)
-
-label5 = Label(frame_right, text=" ", bg="#528860",
-               fg="white", bd=1, relief=SUNKEN)
-label5.grid(row=6, column=0, columnspan=7, sticky=NSEW)
-
-label6 = Label(frame_right, text=" ", bg="#528860",
-               fg="white", bd=1, relief=SUNKEN)
-label6.grid(row=7, column=0, columnspan=7, sticky=NSEW)
-
-label7 = Label(frame_right, text=" ", bg="#528860",
-               fg="white", bd=1, relief=SUNKEN)
-label7.grid(row=8, column=0, columnspan=7, sticky=NSEW)
-
-label8 = Label(frame_right, text=" ", bg="#528860",
-               fg="white", bd=1, relief=SUNKEN)
-label8.grid(row=9, column=0, columnspan=7, sticky=NSEW)
-
-label9 = Label(frame_right, text=" ", bg="#528860",
-               fg="white", bd=1, relief=SUNKEN)
-label9.grid(row=10, column=0, columnspan=7, sticky=NSEW)
-
-label10 = Label(frame_right, text=" ", bg="#528860",
-                fg="white", bd=1, relief=SUNKEN)
-label10.grid(row=11, column=0, columnspan=7, sticky=NSEW)
-
+for i in range (10):
+    Label(frame_left, text="", bg="#207436", fg="black", bd=1, relief=RIDGE).grid(
+        row=i+3, column=5, columnspan=2, sticky=NSEW)
 # Print the window
 window.mainloop()
