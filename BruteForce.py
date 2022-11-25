@@ -1,3 +1,4 @@
+import sys
 import time
 import ressources
 
@@ -17,7 +18,7 @@ import ressources
 # So it is very slow
 # I think it is not recommended to use it with more than 20 items, but it always gives the optimal solution
 def bruteForce(capacity, items):
-    
+
     # Calculate the time of execution
     start_time = time.time()
 
@@ -73,15 +74,13 @@ def bruteForce(capacity, items):
             combinaisonsPossiblesMax = [combinaison]
         elif valeur == valeurMax:
             combinaisonsPossiblesMax.append(combinaison)
-            
+
     # Calculate the time of execution
     end_time = time.time()
     execution_time = end_time - start_time
-    
+
     # Return the list of items that are in the knapsack and the time of execution
     return combinaisonsPossiblesMax, execution_time
-
-
 
 
 ###########################################################
@@ -99,19 +98,19 @@ def bruteForce(capacity, items):
 # So it is very slow
 # I think it is not recommended to use it with more than 20 items, but it always gives the optimal solution
 def bruteForceMD(itemMD, capacities, nbrDimensions):
-    
+
     # Calculate the time of execution
     start_time = time.time()
-    
+
     # Create a list of all possible combinations of items
     combinaisons = []
 
     # Create a list of all possible combinations of items that fit in the knapsack
     combinaisonsPossibles = []
-    
+
     # Create a list of all possible combinations of items that fit in the knapsack and that have the highest value
     combinaisonsPossiblesMax = []
-    
+
     # We initialize the highest combination value to 0
     valeurMax = 0
 
@@ -165,79 +164,82 @@ def bruteForceMD(itemMD, capacities, nbrDimensions):
     return combinaisonsPossiblesMax, execution_time, valeurMax
 
 
-##############################################################
-############### EXECUTION OF SIMPLE KNAPSACK #################
-##############################################################
+def main(type, path):
 
+    ##############################################################
+    ############### EXECUTION OF SIMPLE KNAPSACK #################
+    ##############################################################
 
-# # Here we create the items that we will use in the knapsack problem and we add them to a list of items
-# nbrItems, capacity, items = ressources.readFileCreateList(
-#     "Data/low-dimensional/f8_l-d_kp_23_10000.txt")
+    if (type == "simple"):
 
-# # Here we call the brute force function and we get the list of possible combinations of items with the highest value
-# sortedList, timeExec = bruteForce(capacity, items)
+        # Here we create the items that we will use in the knapsack problem and we add them to a list of items, the path of the file is the parameter of the program
+        nbrItems, capacity, items = ressources.readFileCreateList(path)
 
-# # Here we initialize the highest value and the highest weight to 0
-# finalValue = 0
-# finalWeight = 0
+        # Here we call the brute force function and we get the list of possible combinations of items with the highest value
+        sortedList, timeExec = bruteForce(capacity, items)
 
-# # Here we print the list of possible combinations of items with the highest value and the highest weight that they can carry, and of course, the execution time of the algorithm
-# for combinaison in sortedList:
-#     print()
-#     print("*******************Best Combinaisons*******************")
-#     print()
-#     for item in combinaison:
-#         finalValue += item.value
-#         finalWeight += item.weight
-#         item.printItem()
-#     print("Total Value : " + str(finalValue))
-#     print("Total Weight : " + str(finalWeight))
-#     finalValue = 0
-#     finalWeight = 0
+        # Here we initialize the highest value and the highest weight to 0
+        finalValue = 0
+        finalWeight = 0
+        maxValue = 0
 
-# print()
-# print("*******************Execution Time*******************")
-# print()
-# print("Execution time: ", timeExec, " seconds")
+        # Here we print the list of possible combinations of items with the highest value and the highest weight that they can carry, and of course, the execution time of the algorithm
+        for combinaison in sortedList:
+            print()
+            print("*******************Best Combinaisons*******************")
+            print()
+            for item in combinaison:
+                maxValue += item.value
+                finalWeight += item.weight
+                item.printItem()
+            print("Total Value : " + str(finalValue))
+            print("Total Weight : " + str(finalWeight))
+            finalValue = maxValue
+            maxValue = 0
+            finalWeight = 0
 
+        print()
+        print("*******************Execution Time*******************")
+        print()
+        print("Execution time: ", timeExec, " seconds")
 
+    ########################################################################
+    ############### EXECUTION OF MULTIDIMENSIONAL KNAPSACK #################
+    ########################################################################
 
-########################################################################
-############### EXECUTION OF MULTIDIMENSIONAL KNAPSACK #################
-########################################################################
+    else:
 
-# For the multidimensional knapsack problem, we have to get the list of items and the number of dimensions of the knapsack
-listeItemMD, nbrDimension, listeWeightKnapsack, optValue = ressources.readMultiDimFile("Data/multi-dimentional/gkTiny.dat")
+        # For the multidimensional knapsack problem, we have to get the list of items and the number of dimensions of the knapsack
+        listeItemMD, nbrDimension, listeWeightKnapsack, optValue = ressources.readMultiDimFile(
+            path)
 
-# Here we call the brute force function and we get the list of possible combinations of items with the highest value
-sortedList, timeExec, valeurMax = bruteForceMD(listeItemMD, listeWeightKnapsack, nbrDimension)
+        # Here we call the brute force function and we get the list of possible combinations of items with the highest value
+        sortedList, timeExec, finalValue = bruteForceMD(
+            listeItemMD, listeWeightKnapsack, nbrDimension)
 
-# Here we initialize the highest weight to 0
-finalWeight = [0] * nbrDimension
+        # Here we initialize the highest weight to 0
+        finalWeight = [0] * nbrDimension
 
-# Here we print the list of possible combinations of items with the highest value and the highest weight that they can carry, and of course, the execution time of the algorithm
-for combinaison in sortedList:
-    print()
-    print("*******************Best Combinaisons*******************")
-    print()
-    for item in combinaison:
-        for i in range(nbrDimension):
-            finalWeight[i] += item.weight[i]
-        item.printItem()
-    print("Total Weight : " + str(finalWeight))
-    finalWeight = [0] * nbrDimension
+        # Here we print the list of possible combinations of items with the highest value and the highest weight that they can carry, and of course, the execution time of the algorithm
+        for combinaison in sortedList:
+            print()
+            print("*******************Best Combinaisons*******************")
+            print()
+            for item in combinaison:
+                for i in range(nbrDimension):
+                    finalWeight[i] += item.weight[i]
+                item.printItem()
+            print("Total Weight : " + str(finalWeight))
+            finalWeight = [0] * nbrDimension
 
-print()
-print("*******************Execution Time*******************")
-print()
-print("Execution time: ", timeExec, " seconds")
+        print()
+        print("*******************Execution Time*******************")
+        print()
+        print("Execution time: ", timeExec, " seconds")
 
-print()
-print("*******************Optimal Value*******************")
-print()
-print("Optimal value found: ", valeurMax)
+        print()
+        print("*******************Optimal Value*******************")
+        print()
+        print("Optimal value found: ", finalValue)
 
-
-
-
-
+    return timeExec, finalValue
