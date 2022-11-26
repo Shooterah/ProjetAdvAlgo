@@ -8,6 +8,7 @@ import BruteForce
 import Branch_and_Bound
 import DataGenerator
 import RandomizedApproach
+import Dynamic
 
 # Dictionnary Variable time and MaxValue from the programes for the simple knapsack problem
 timeSimple = {
@@ -67,12 +68,16 @@ def callBruteForce():
     # retrieve the file name
     if problemType.get() == "simple":
         path = "Data/low-dimensional/"+fnright.get()
-        timeSimple["brute"], maxValueSimple["brute"] = BruteForce.main("simple", path)
-        print("time=", timeSimple["brute"], "maxValue=", maxValueSimple["brute"])
+        timeSimple["brute"], maxValueSimple["brute"] = BruteForce.main(
+            "simple", path)
+        print("time=", timeSimple["brute"],
+              "maxValue=", maxValueSimple["brute"])
     elif problemType.get() == "multiDim":
         path = "Data/multi-dimentional/"+fnright.get()
-        timeMultiDim["brute"], maxValueMultiDim["brute"] = BruteForce.main("multi", path)
-        print("time=", timeMultiDim["brute"], "maxValue=", maxValueMultiDim["brute"])
+        timeMultiDim["brute"], maxValueMultiDim["brute"] = BruteForce.main(
+            "multi", path)
+        print("time=", timeMultiDim["brute"],
+              "maxValue=", maxValueMultiDim["brute"])
     # Refreh the values printed in the window (time and max value)
     reloadValues()
 
@@ -101,28 +106,47 @@ def callgreedyr():
 
 
 def callDynamic():
-    os.system("python Dynamic.py")
+    if problemType.get() == "simple":
+        path = "Data/low-dimensional/"+fnright.get()
+        timeSimple["dynamic"], maxValueSimple["dynamic"] = Dynamic.main(
+            "simple", path)
+        print("time=", timeSimple["dynamic"],
+              "maxValue=", maxValueSimple["dynamic"])
+    elif problemType.get() == "multiDim":
+        path = "Data/multi-dimentional/"+fnright.get()
+        timeSimple["dynamic"], maxValueSimple["dynamic"] = Dynamic.main(
+            "multi", path)
+        print("time=", timeSimple["dynamic"],
+              "maxValue=", maxValueSimple["dynamic"])
+    # Refreh the values printed in the window (time and max value)
+    reloadValues()
 
 
 def callBranchAndBound():
     if problemType.get() == "simple":
         path = "Data/low-dimensional/"+fnright.get()
-        timeSimple["branch"], maxValueSimple["branch"] = Branch_and_Bound.main("simple", path)
-        print("time=", timeSimple["branch"], "maxValue=", maxValueSimple["branch"])
+        timeSimple["branch"], maxValueSimple["branch"] = Branch_and_Bound.main(
+            "simple", path)
+        print("time=", timeSimple["branch"],
+              "maxValue=", maxValueSimple["branch"])
     elif problemType.get() == "multiDim":
         path = "Data/multi-dimentional/"+fnright.get()
-        timeSimple["branch"], maxValueSimple["branch"] = Branch_and_Bound.main("multi", path)
-        print("time=", timeSimple["branch"], "maxValue=", maxValueSimple["branch"])
+        timeSimple["branch"], maxValueSimple["branch"] = Branch_and_Bound.main(
+            "multi", path)
+        print("time=", timeSimple["branch"],
+              "maxValue=", maxValueSimple["branch"])
     # Refreh the values printed in the window (time and max value)
     reloadValues()
-        
-        
+
+
 # Function for called the program RandomizedApproach that solve the KnapSack problem with a randomized approach
 def callRandom():
     if problemType.get() == "simple":
         path = "Data/low-dimensional/"+fnright.get()
-        timeSimple["random"], maxValueSimple["random"] = RandomizedApproach.main("simple", path)
-        print("time=", timeSimple["random"], "maxValue=", maxValueSimple["random"])
+        timeSimple["random"], maxValueSimple["random"] = RandomizedApproach.main(
+            "simple", path)
+        print("time=", timeSimple["random"],
+              "maxValue=", maxValueSimple["random"])
     # Refreh the values printed in the window (time and max value)
     reloadValues()
 
@@ -154,8 +178,8 @@ buttonMultiBag = Button(frameMenu, text="Multi-Bag", bg="red",
                         fg="white", command=lambda: problemType.set("multiBag"))
 buttonMultiBag.pack(side=LEFT, padx=5, pady=5)
 
-#create 2 entry to write the number of items and the capacity of the knapsack inside the frame frameMenu
-#the variable items and capacity will be used to create a file with the right number of items and the right capacity
+# create 2 entry to write the number of items and the capacity of the knapsack inside the frame frameMenu
+# the variable items and capacity will be used to create a file with the right number of items and the right capacity
 items = StringVar()
 capacity = StringVar()
 filename = StringVar()
@@ -163,7 +187,8 @@ filename = StringVar()
 frameEntry = Frame(window, bg="#528860")
 frameEntry.pack(side=TOP, fill=X)
 # Create the entry
-labelItems = Label(frameEntry, text="Number of items", bg="#528860", fg="white")
+labelItems = Label(frameEntry, text="Number of items",
+                   bg="#528860", fg="white")
 labelItems.pack(side=LEFT, padx=5, pady=5)
 entryItems = Entry(frameEntry, textvariable=items, width=10)
 entryItems.pack(side=LEFT, padx=5, pady=5)
@@ -180,6 +205,8 @@ entryFilename.pack(side=LEFT, padx=5, pady=5)
 # The file will be created in the folder Data/low-dimensional
 # The name of the file will be the number of items and the capacity
 # The file will be created only if the number of items and the capacity are not empty
+
+
 def createFile_interface():
     if items.get() != "" and capacity.get() != "":
         if problemType.get() == "simple":
@@ -188,17 +215,17 @@ def createFile_interface():
             path = "Data/multi-dimentional/"
         elif problemType.get() == "multiBag":
             path = "Data/multi-bag/"
-        DataGenerator.mainGraphique(path,filename.get(),int(items.get()), int(capacity.get()))
+        DataGenerator.mainGraphique(
+            path, filename.get(), int(items.get()), int(capacity.get()))
         changeFiles()
 
     else:
         print("Please enter the number of items and the capacity")
+
+
 buttonCreateFile = Button(frameEntry, text="Create file", bg="green",
                           fg="white", command=createFile_interface)
 buttonCreateFile.pack(side=LEFT, padx=5, pady=5)
-
-
-
 
 
 # change the color of the button when the variable problemType is updated
@@ -344,29 +371,31 @@ title2.grid(row=0, column=5, rowspan=2, columnspan=2, sticky=NSEW)
 
 # Create 11 label for the row 2 to 12 and that take all column, the text is the value in the dictionary of the current problem
 def reloadValues():
-    if(problemType.get() == "simple"):
+    if (problemType.get() == "simple"):
         i = 0
         for key, value in maxValueSimple.items():
             Label(frame_left, text=value, bg="#207436", fg="black", bd=1, relief=RIDGE).grid(
                 row=i+3, column=3, columnspan=2, sticky=NSEW)
             print(value)
-            i+=1
+            i += 1
         i = 0
         for key, value in timeSimple.items():
             Label(frame_left, text=value, bg="#207436", fg="black", bd=1, relief=RIDGE).grid(
                 row=i+3, column=5, columnspan=2, sticky=NSEW)
-            i+=1
-    elif(problemType.get() == "multiDim"):
+            i += 1
+    elif (problemType.get() == "multiDim"):
         i = 0
         for key, value in maxValueMultiDim.items():
             Label(frame_left, text=value, bg="#207436", fg="black", bd=1, relief=RIDGE).grid(
                 row=i+3, column=3, columnspan=2, sticky=NSEW)
-            i+=1
+            i += 1
         i = 0
         for key, value in timeMultiDim.items():
             Label(frame_left, text=value, bg="#207436", fg="black", bd=1, relief=RIDGE).grid(
                 row=i+3, column=5, columnspan=2, sticky=NSEW)
-            i+=1
+            i += 1
+
+
 # Print the window
 reloadValues()
 window.mainloop()
