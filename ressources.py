@@ -150,18 +150,18 @@ def readMultiDimFile(path):
         
         index = 0
         
+        # Create the list of item value     
+        for j in range(n):
+            # Value of item i
+            value.append(int(listeDonnee[index])) 
+            index += 1
+        
         # Create the list of item weight for each dimension
         for i in range(n):
             for j in range(d):
                 # Weight of item i in dimension j
                 weight[i][j] = int(listeDonnee[index])
                 index += 1
-                
-        # Create the list of item value     
-        for j in range(n):
-            # Value of item i
-            value.append(int(listeDonnee[index])) 
-            index += 1
             
         # Create the list of item ratio for each dimension
         for i in range(n):

@@ -17,14 +17,11 @@ import random
 import time
 import ressources
 
-# We stock the number of item, the weight of the knapsack, and the list of item in the variable n, wmax, and listItem respectively. We use the function readFileCreateList from the ressources.py file.
-nbrItems, capacity, items = ressources.readFileCreateList("Data/low-dimensional/f8_l-d_kp_23_10000.txt")
-
 
 # We create a function that will return a random solution, for the distribution we will use the ratio of the value of the item to the weight of the item. The function take in parameters the number of items, the weight of the knapsack, and the list of items. The function return the solution and the time to find the solution. (The ratio of the item is stocked in the variable item.ratio)
 # For the best case, its complexity is O(n) because we have a loop that will run n times. And all items have the good criteria and can fit in the knapsack. So, we will have a solution with all items.
 # For the worst case, its complexity is O(n*(n-1)) because we have a loop that will run n times and this loop can run n-1 times (with the decrementation of the criteria).
-def randomSolution(capacity, items):
+def randomSolution(capacity, items, nbrItems):
 
     # We calculate the time of execution of the algorithm
     start_time = time.time()
@@ -40,7 +37,8 @@ def randomSolution(capacity, items):
     criteria = criteria / len(items)
     criteria = criteria + (criteria * 0.01)
 
-    
+    #Shuffle the list of items to have a random selection
+    random.shuffle(items)
     
     
     # We create a loop that will select the items that have a ratio higher or equal to the criteria and that can fit in the knapsack ans stock them in the solution list.
@@ -95,20 +93,21 @@ def weightSolution(solution):
     # We return the weight of the solution
     return weight
 
-# We test the algorithm
-solution, execution_time = randomSolution(capacity, items)
+def main(type, path):
+    
+    if(type == "simple"):
+        
+        # We stock the number of item, the weight of the knapsack, and the list of item in the variable n, wmax, and listItem respectively. We use the function readFileCreateList from the ressources.py file.
+        nbrItems, capacity, items = ressources.readFileCreateList(path)
 
-for item in solution:
-    item.printItem()
-print("Value of the solution: ", valueSolution(solution))
-print("Weight of the solution: ", weightSolution(solution))
-print("Execution time: ", execution_time)
+        # We test the algorithm
+        solution, execution_time = randomSolution(capacity, items, nbrItems)
 
-# We test the algorithm 100 times
-#for i in range(100):
-    #solution, execution_time = randomSolution(nbrItems, capacity, items)
-    #print("Solution: ", solution)
-    #print("Value of the solution: ", valueSolution(solution, items))
-    #print("Weight of the solution: ", weightSolution(solution))
-    #print("Execution time: ", execution_time)
+        for item in solution:
+            item.printItem()
+        print("Value of the solution: ", valueSolution(solution))
+        print("Weight of the solution: ", weightSolution(solution))
+        print("Execution time: ", execution_time)
+        
+        return execution_time, valueSolution(solution)
         

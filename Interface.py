@@ -7,10 +7,59 @@ import subprocess
 import BruteForce
 import Branch_and_Bound
 import DataGenerator
+import RandomizedApproach
 
-# Variable time and MaxValue from the programes
-time = [0 for x in range(8)]
-maxValue = [0 for x in range(8)]
+# Dictionnary Variable time and MaxValue from the programes for the simple knapsack problem
+timeSimple = {
+    "brute": "",
+    "greedyV": "",
+    "greedyW": "",
+    "greedyR": "",
+    "dynamic": "",
+    "branch": "",
+    "fullpoly": "",
+    "random": "",
+    "ant": "",
+    "personnal": ""
+}
+maxValueSimple = {
+    "brute": "",
+    "greedyV": "",
+    "greedyW": "",
+    "greedyR": "",
+    "dynamic": "",
+    "branch": "",
+    "fullpoly": "",
+    "random": "",
+    "ant": "",
+    "personnal": ""
+}
+
+# Dictionnary Variable time and MaxValue from the programes for the MultiDimensional knapsack problem
+timeMultiDim = {
+    "brute": "",
+    "greedyV": "",
+    "greedyW": "",
+    "greedyR": "",
+    "dynamic": "",
+    "branch": "",
+    "fullpoly": "",
+    "random": "",
+    "ant": "",
+    "personnal": ""
+}
+maxValueMultiDim = {
+    "brute": "",
+    "greedyV": "",
+    "greedyW": "",
+    "greedyR": "",
+    "dynamic": "",
+    "branch": "",
+    "fullpoly": "",
+    "random": "",
+    "ant": "",
+    "personnal": ""
+}
 
 
 # Function that call the program brute force with the file selected in the Entry fnright
@@ -18,12 +67,14 @@ def callBruteForce():
     # retrieve the file name
     if problemType.get() == "simple":
         path = "Data/low-dimensional/"+fnright.get()
-        time[0], maxValue[0] = BruteForce.main("simple", path)
-        print("time=", time[0], "maxValue=", maxValue[0])
+        timeSimple["brute"], maxValueSimple["brute"] = BruteForce.main("simple", path)
+        print("time=", timeSimple["brute"], "maxValue=", maxValueSimple["brute"])
     elif problemType.get() == "multiDim":
         path = "Data/multi-dimentional/"+fnright.get()
-        time[0], maxValue[0] = BruteForce.main("multi", path)
-        print("time=", time[0], "maxValue=", maxValue[0])
+        timeMultiDim["brute"], maxValueMultiDim["brute"] = BruteForce.main("multi", path)
+        print("time=", timeMultiDim["brute"], "maxValue=", maxValueMultiDim["brute"])
+    # Refreh the values printed in the window (time and max value)
+    reloadValues()
 
 
 def callgreedyv():
@@ -56,12 +107,24 @@ def callDynamic():
 def callBranchAndBound():
     if problemType.get() == "simple":
         path = "Data/low-dimensional/"+fnright.get()
-        time[5], maxValue[5] = Branch_and_Bound.main("simple", path)
-        print("time=", time[5], "maxValue=", maxValue[5])
+        timeSimple["branch"], maxValueSimple["branch"] = Branch_and_Bound.main("simple", path)
+        print("time=", timeSimple["branch"], "maxValue=", maxValueSimple["branch"])
     elif problemType.get() == "multiDim":
         path = "Data/multi-dimentional/"+fnright.get()
-        time[5], maxValue[5] = Branch_and_Bound.main("multi", path)
-        print("time=", time[5], "maxValue=", maxValue[5])
+        timeSimple["branch"], maxValueSimple["branch"] = Branch_and_Bound.main("multi", path)
+        print("time=", timeSimple["branch"], "maxValue=", maxValueSimple["branch"])
+    # Refreh the values printed in the window (time and max value)
+    reloadValues()
+        
+        
+# Function for called the program RandomizedApproach that solve the KnapSack problem with a randomized approach
+def callRandom():
+    if problemType.get() == "simple":
+        path = "Data/low-dimensional/"+fnright.get()
+        timeSimple["random"], maxValueSimple["random"] = RandomizedApproach.main("simple", path)
+        print("time=", timeSimple["random"], "maxValue=", maxValueSimple["random"])
+    # Refreh the values printed in the window (time and max value)
+    reloadValues()
 
 
 # main
@@ -146,14 +209,17 @@ def changeColor():
         buttonSimple.config(bg="green")
         buttonMultiDim.config(bg="red")
         buttonMultiBag.config(bg="red")
+        reloadValues()
     elif problemType.get() == "multiDim":
         buttonSimple.config(bg="red")
         buttonMultiDim.config(bg="green")
         buttonMultiBag.config(bg="red")
+        reloadValues()
     elif problemType.get() == "multiBag":
         buttonSimple.config(bg="red")
         buttonMultiDim.config(bg="red")
         buttonMultiBag.config(bg="green")
+        reloadValues()
 
 
 # bind the function changeColor to the variable problemType
@@ -249,7 +315,7 @@ button7 = Button(frame_left, text="Fully polynomial time",
 button7.grid(row=9, column=0, columnspan=3, sticky=NSEW)
 
 button8 = Button(frame_left, text="Randomized approach",
-                 bg="#8BC49A", fg="black", bd=1)
+                 bg="#8BC49A", fg="black", bd=1, command=callRandom)
 button8.grid(row=10, column=0, columnspan=3, sticky=NSEW)
 
 button9 = Button(frame_left, text="Ant colony",
@@ -276,13 +342,31 @@ title2 = Label(frame_left, text="Time of algorithme", bg="#207436",
 title2.grid(row=0, column=5, rowspan=2, columnspan=2, sticky=NSEW)
 
 
-# Create 11 label for the row 2 to 12 and that take all column
-for i in range (10):
-    Label(frame_left, text="", bg="#207436", fg="black", bd=1, relief=RIDGE).grid(
-        row=i+3, column=3, columnspan=2, sticky=NSEW)
-
-for i in range (10):
-    Label(frame_left, text="", bg="#207436", fg="black", bd=1, relief=RIDGE).grid(
-        row=i+3, column=5, columnspan=2, sticky=NSEW)
+# Create 11 label for the row 2 to 12 and that take all column, the text is the value in the dictionary of the current problem
+def reloadValues():
+    if(problemType.get() == "simple"):
+        i = 0
+        for key, value in maxValueSimple.items():
+            Label(frame_left, text=value, bg="#207436", fg="black", bd=1, relief=RIDGE).grid(
+                row=i+3, column=3, columnspan=2, sticky=NSEW)
+            print(value)
+            i+=1
+        i = 0
+        for key, value in timeSimple.items():
+            Label(frame_left, text=value, bg="#207436", fg="black", bd=1, relief=RIDGE).grid(
+                row=i+3, column=5, columnspan=2, sticky=NSEW)
+            i+=1
+    elif(problemType.get() == "multiDim"):
+        i = 0
+        for key, value in maxValueMultiDim.items():
+            Label(frame_left, text=value, bg="#207436", fg="black", bd=1, relief=RIDGE).grid(
+                row=i+3, column=3, columnspan=2, sticky=NSEW)
+            i+=1
+        i = 0
+        for key, value in timeMultiDim.items():
+            Label(frame_left, text=value, bg="#207436", fg="black", bd=1, relief=RIDGE).grid(
+                row=i+3, column=5, columnspan=2, sticky=NSEW)
+            i+=1
 # Print the window
+reloadValues()
 window.mainloop()
