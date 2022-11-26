@@ -1,5 +1,7 @@
 import numpy as np
 import ressources
+import time
+
 # Function Dynamic (be care u can only use file where the weight isn't a float)
 # O(nW)time and O(nW)space
 
@@ -47,45 +49,24 @@ def DynamicSearchSolution(Table, restWeight, nPos, knapsack, items):
 #----#
 #Main#
 #----#
-# Here we create the items that we will use in the knapsack problem and we add them to a list of items
-nbrItems, capacity, items = ressources.readFileCreateList(
-    "Data/low-dimensional/f8_l-d_kp_23_10000.txt")
-# "Data/low-dimensional/test_arthur.txt")
+def main(type, path):
+    # add condition if capacity is 0
+    if type == "simple":
+        # Here we get the number of items the knapsack capacity and a list of   items composed of positioning in the texte,value and weight.
+        start = time.time()
+        nbrItems, capacity, items = ressources.readFileCreateList(path)
+        # create the table of results and initialize it with 0 (capcity +1 because we start from 0)
+        resTable = np.zeros((nbrItems, capacity+1))
+        # fill the table with the dynamic function
+        a = DynamicInitTable(items, capacity+1, nbrItems, resTable)
 
-# add condition if capacity is 0
-
-# some print
-print("\n Nbr of items : ", nbrItems)
-print("\n Capacity : ", capacity)
-
-# list of items
-print("\n List of items : ")
-for i in items:
-    print(i.printItem())
-
-
-# create the table of results and initialize it with 0 (capcity +1 because we start from 0)
-resTable = np.zeros((nbrItems, capacity+1))
-
-# print the matrice resTable
-print("\n Matrice : ")
-a = DynamicInitTable(items, capacity+1, nbrItems, resTable)
-print(a)
-
-#green in terminal
-print('\033[92m')
-
-# Last Value of the table , this is the best Value we have in this configuration
-print("\n BIGGER VALUE : ", a[nbrItems-1, capacity])
-
-# standar color in terminal
-print('\033[0m')
-
-knapsack = []
-
-finalKnapsack = DynamicSearchSolution(
-    a, int(capacity), nbrItems-1, knapsack, items)
-
-print("\n Final knapsack : ")
-for i in finalKnapsack:
-    print(i.printItem())
+        # avoir le knapsack
+        knapsack = []
+        finalKnapsack = DynamicSearchSolution(
+            a, int(capacity), nbrItems-1, knapsack, items)
+        MaxValue = a[nbrItems-1, capacity]
+        start = time.time() - start
+    if type == "multi":
+        best_Value = 0
+        start = 0
+    return start, MaxValue

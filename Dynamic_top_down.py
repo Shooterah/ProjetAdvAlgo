@@ -1,3 +1,4 @@
+# Made by Arthur Micol
 import ressources
 
 # for add knapsack constitution , add a table where it's stock the value of the knapsack for each branch
