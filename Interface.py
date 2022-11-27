@@ -147,6 +147,12 @@ def callRandom():
             "simple", path)
         print("time=", timeSimple["random"],
               "maxValue=", maxValueSimple["random"])
+    elif problemType.get() == "multiDim":
+        path = "Data/multi-dimentional/"+fnright.get()
+        timeMultiDim["random"], maxValueMultiDim["random"] = RandomizedApproach.main(
+            "multiDim", path)
+        print("time=", timeMultiDim["random"],
+              "maxValue=", maxValueMultiDim["random"])
     # Refreh the values printed in the window (time and max value)
     reloadValues()
 

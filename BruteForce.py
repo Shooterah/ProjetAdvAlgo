@@ -210,7 +210,7 @@ def main(type, path):
     else:
 
         # For the multidimensional knapsack problem, we have to get the list of items and the number of dimensions of the knapsack
-        listeItemMD, nbrDimension, listeWeightKnapsack, optValue = ressources.readMultiDimFile(
+        listeItemMD, nbrItems, nbrDimension, listeWeightKnapsack, optValue = ressources.readMultiDimFile(
             path)
 
         # Here we call the brute force function and we get the list of possible combinations of items with the highest value

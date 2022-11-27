@@ -178,7 +178,7 @@ def readMultiDimFile(path):
             weightDim.append(int(listeDonnee[index]))
             index += 1
             
-    return listItem, d, weightDim, opt
+    return listItem, n, d, weightDim, opt
 
 
 
