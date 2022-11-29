@@ -1,4 +1,5 @@
 # Made by Arthur Micol
+import numpy as np
 import ressources
 import time
 
