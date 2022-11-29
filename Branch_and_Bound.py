@@ -16,28 +16,12 @@ from traceback import print_tb
 import ressources
 import time
 
-
-#---------------------------------------------------------VARIABLE--------------------------------------------------------------------#
-
-# This variable is used to know the Value of all items the capacity of the bag and the number of items.
-capacity = 0
-maxValue = 0
-nbrItems = 0
-# The initalisation of the tree use to found the best items set.
-Tree = ressources.Node(None, None, None, None, None, None)
-# The Combination list with the best Value
-best_Combination = []
-partial_Combination = []
-partial_Weight = 0
-partial_Value = 0
-
-
 #----------------------------------------------------USEFULL-FUNCTION-----------------------------------------------------------------#
 
 # This fonction take the first series of item in the items list to generate a fake best solution with a fake best value (maybe not fake if we are really lucky)
 # Then we can use this best combination list and best value to compare it in our main algorithm for the first loop
 
-def create_Best_Combination(items):
+def create_Best_Combination(best_Combination,capacity,items):
     best_Weight = 0
     best_Value = 0
     i = 0
@@ -76,7 +60,19 @@ def knapsack(tree, capacity, best_Value, best_Weight, best_Combination, partial_
 
 
 def main(type, path):
-    global maxValue
+    # This variable is used to know the Value of all items the capacity of the bag and the number of items.
+    capacity = 0
+    maxValue = 0
+    nbrItems = 0
+    # The initalisation of the tree use to found the best items set.
+    Tree = ressources.Node(None, None, None, None, None, None)
+    # The Combination list with the best Value
+    best_Combination = []
+    partial_Combination = []
+    partial_Weight = 0
+    partial_Value = 0
+
+
     if type == "simple":
         # Here we get the number of items the knapsack capacity and a list of items composed of positioning in the texte,value and weight.
         start = time.time()
@@ -88,8 +84,7 @@ def main(type, path):
         for data in items:
             ressources.Node.addNode(Tree, data, 0, maxValue, 0, None, None)
 
-        best_Combination, best_Value, best_Weight = create_Best_Combination(
-            items)
+        best_Combination, best_Value, best_Weight = create_Best_Combination(best_Combination,capacity,items)
         best_Combination, best_Value, best_Weight = knapsack(
             Tree, capacity, best_Value, best_Weight, best_Combination, partial_Combination, partial_Weight, partial_Value)
         start = time.time() - start
