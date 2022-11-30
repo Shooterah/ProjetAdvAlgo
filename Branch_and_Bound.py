@@ -35,6 +35,9 @@ def create_Best_Combination(best_Combination,capacity,items):
 
     return best_Combination, best_Value, best_Weight
 
+# this function is used to find the best combination of items
+# it compose of a tree and a recursive function
+# the tree is used to stock all the possible combination of items
 
 def knapsack(tree, capacity, best_Value, best_Weight, best_Combination, partial_Combination, partial_Weight, partial_Value):
     # this is whene we find a better solution
@@ -63,7 +66,7 @@ def knapsack(tree, capacity, best_Value, best_Weight, best_Combination, partial_
 
 #-----------------------------------------------------------MAIN----------------------------------------------------------------------#
 
-
+# Main function of the program which is used to call the other function and to display the result of the program on the graphic interface
 def main(type, path):
     # This variable is used to know the Value of all items the capacity of the bag and the number of items.
     capacity = 0
@@ -79,7 +82,7 @@ def main(type, path):
     partial_Weight = 0
     partial_Value = 0
 
-
+    # Main for the simple knapsack problem
     if type == "simple":
         # start the timer
         start = time.time()
@@ -100,6 +103,7 @@ def main(type, path):
             Tree, capacity, best_Value, best_Weight, best_Combination, partial_Combination, partial_Weight, partial_Value)
         # stop the timer
         start = time.time() - start
+    # Main for the multiple knapsack problem
     if type == "multi":
         best_Value = 0
         start = 0
