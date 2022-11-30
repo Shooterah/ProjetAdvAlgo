@@ -29,7 +29,8 @@ def create_Best_Combination(best_Combination,capacity,items):
         best_Combination.append(items[i])
         best_Weight += getattr(items[i], 'weight')
         best_Value += getattr(items[i], 'value')
-        i = i+1
+        if i < len(items) - 1:
+            i += 1
 
     return best_Combination, best_Value, best_Weight
 
@@ -63,7 +64,7 @@ def main(type, path):
     maxValue = 0
     nbrItems = 0
     # The initalisation of the tree use to found the best items set.
-    Tree = ressources.Node(None, None, None, None, None, None)
+    Tree = ressources.Node(None,None,None, None, None, None, None)
     # The Combination list with the best Value
     best_Combination = []
     partial_Combination = []
@@ -80,8 +81,7 @@ def main(type, path):
         for i in items:
             maxValue += i.value
         for data in items:
-            ressources.Node.addNode(Tree, data, 0, maxValue, 0, None, None)
-
+            ressources.Node.addNode(Tree, data, 0, maxValue, 0, None, None,nbrItems)
         best_Combination, best_Value, best_Weight = create_Best_Combination(best_Combination,capacity,items)
         best_Combination, best_Value, best_Weight = knapsack(
             Tree, capacity, best_Value, best_Weight, best_Combination, partial_Combination, partial_Weight, partial_Value)
