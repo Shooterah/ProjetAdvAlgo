@@ -70,14 +70,10 @@ def callBruteForce():
         path = "Data/low-dimensional/"+fnright.get()
         timeSimple["brute"], maxValueSimple["brute"] = BruteForce.main(
             "simple", path)
-        print("time=", timeSimple["brute"],
-              "maxValue=", maxValueSimple["brute"])
     elif problemType.get() == "multiDim":
         path = "Data/multi-dimentional/"+fnright.get()
         timeMultiDim["brute"], maxValueMultiDim["brute"] = BruteForce.main(
             "multi", path)
-        print("time=", timeMultiDim["brute"],
-              "maxValue=", maxValueMultiDim["brute"])
     # Refreh the values printed in the window (time and max value)
     reloadValues()
 
@@ -110,14 +106,10 @@ def callDynamic():
         path = "Data/low-dimensional/"+fnright.get()
         timeSimple["dynamic"], maxValueSimple["dynamic"] = Dynamic.main(
             "simple", path)
-        print("time=", timeSimple["dynamic"],
-              "maxValue=", maxValueSimple["dynamic"])
     elif problemType.get() == "multiDim":
         path = "Data/multi-dimentional/"+fnright.get()
         timeSimple["dynamic"], maxValueSimple["dynamic"] = Dynamic.main(
             "multi", path)
-        print("time=", timeSimple["dynamic"],
-              "maxValue=", maxValueSimple["dynamic"])
     # Refreh the values printed in the window (time and max value)
     reloadValues()
 
@@ -127,14 +119,10 @@ def callBranchAndBound():
         path = "Data/low-dimensional/"+fnright.get()
         timeSimple["branch"], maxValueSimple["branch"] = Branch_and_Bound.main(
             "simple", path)
-        print("time=", timeSimple["branch"],
-              "maxValue=", maxValueSimple["branch"])
     elif problemType.get() == "multiDim":
         path = "Data/multi-dimentional/"+fnright.get()
         timeSimple["branch"], maxValueSimple["branch"] = Branch_and_Bound.main(
             "multi", path)
-        print("time=", timeSimple["branch"],
-              "maxValue=", maxValueSimple["branch"])
     # Refreh the values printed in the window (time and max value)
     reloadValues()
 
