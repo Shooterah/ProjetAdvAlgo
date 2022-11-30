@@ -22,6 +22,7 @@ class item:
     # 2] a level that allow us to know on each node at which depht it is.
     # 3] CumValue is used to stock the value of all item already selected in the node.
     # 4] CumWeight is also used to stock the value of the total weight of item already selected in the current node.
+    # 5] MaxValue is used to stock the value of the bound of the node.
     # 5] and 6] the lef and right children who are the same but the left is used for a selected item and the right for an unselected one.
 
 class Node:
@@ -38,6 +39,7 @@ class Node:
 # We don't put data on leaf but we add the Cumulated Value  and the Cumulated Weight
 
     def addNode(self,newdata,CumValue,MaxValue,CumWeight,Left_children,Right_children,level):
+        # If the node is empty we add the data
         if self.data == None:
             self.data = newdata
             self.level = level
@@ -46,35 +48,46 @@ class Node:
             self.MaxValue = MaxValue
             self.Left_children = Left_children
             self.Right_children = Right_children
+        # If the node is not empty we add the data in the left and right children
         else :
+            # if the level = 2 we also add data in the left and right grandchildren
             if level == 2:
                 self.Left_children = Node(newdata,CumValue+self.data.value,MaxValue,self.CumWeight+self.data.weight,Node(None,newdata.value+self.CumValue+self.data.value,MaxValue,newdata.weight+self.CumWeight+self.data.weight,None,None,level-2),Node(None,self.CumValue+self.data.value,MaxValue-self.data.value,self.CumWeight+self.data.weight,None,None,level-2),level-1)
                 self.Right_children = Node(newdata,self.CumValue,MaxValue-self.data.value,self.CumWeight,Node(None,newdata.value+self.CumValue,MaxValue-self.data.value,newdata.weight+self.CumWeight,None,None,level-2),Node(None,self.CumValue,MaxValue-(self.data.value-newdata.value),self.CumWeight,None,None,level-2),level-1)
+            # if the level > 2 we add data in the left and right children 
             else:
+                #if the left children is empty we add the data in the left children
                 if  self.Left_children is None:
                     self.Left_children = Node(newdata,CumValue+self.data.value,MaxValue,self.CumWeight+self.data.weight,None,None,level-1)
                 else : 
+                    #recursive call to add the data in the left children
                     self.Left_children.addNode(newdata,CumValue+self.data.value,MaxValue,self.CumWeight+self.data.weight,None,None,level-1)
                 if self.Right_children is None:
+                    # if the Right children is empty we add the data in the left children
                     self.Right_children = Node(newdata,self.CumValue,MaxValue-self.data.value,self.CumWeight,None,None,level-1)
-                else : 
+                else :
+                    #recursive call to add the data in the right children
                     self.Right_children.addNode(newdata,self.CumValue,MaxValue-self.data.value,self.CumWeight,None,None,level-1)
 
 # Print the tree with a level distinction
-   
     def printTree(self):
         i = 0
         tab = ""
         while i < self.level:
+        # indent the node according to its level
             tab = tab+"\t"
             i+=1
         if self.data == None:
+        # print the node if it is empty 
             print(tab+"Empty"+" L: "+str(self.level)+" CV: "+str(self.CumValue)+" CW: "+str(self.CumWeight))
         else:
+        # print the node if it is not empty with the data and all the cumulated value and weight 
             print(str(tab)+"L:" +str(self.level)+str(item.printItemTree(self.data))+" CV: "+str(self.CumValue)+" CW: "+str(self.CumWeight) + " MV: " + str(self.MaxValue))
             if self.Left_children:
+            # recursive call to print the left children
                 self.Left_children.printTree()
             if self.Right_children:
+            # recursive call to print the right children
                 self.Right_children.printTree()
 
 def readFileCreateList(path):
