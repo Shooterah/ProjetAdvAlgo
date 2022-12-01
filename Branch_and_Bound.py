@@ -107,4 +107,4 @@ def main(type, path):
     if type == "multi":
         best_Value = 0
         start = 0
-    return start, best_Value
+    return start, best_Value, nbrItems

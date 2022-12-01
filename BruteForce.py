@@ -242,4 +242,4 @@ def main(type, path):
         print()
         print("Optimal value found: ", finalValue)
 
-    return timeExec, finalValue
+    return timeExec, finalValue , nbrItems
