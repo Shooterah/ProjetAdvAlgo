@@ -6,9 +6,9 @@
 #  +---------------------------------+
 #
 # Arguments :
-# ----------- 
+# -----------
 #
-#   path = path of the file 
+#   path = path of the file
 #
 
 #
@@ -42,10 +42,10 @@ UNDERLINE = '\033[4m'
 BOLD = '\033[1m'
 
 # Number of ANTS
-ANTS = 10
+ANTS = 20
 
 # Nubmer of cycles
-CYCLES = 100
+CYCLES = 3
 
 # Choice of the attractive strenght
 RATIO = 1
@@ -53,7 +53,7 @@ VALUE = 2
 WEIGHT = 3
 
 # Evaporation of pheromones [0-1]
-EVAP = 0.2
+EVAP = 0.01
 
 # Initial state of pheromones
 PHERO = 1
@@ -71,9 +71,9 @@ def manual() :
     #print(" > 1 option (String) of attractive strenght expected")
     print(" > 1 path (String) argument expected")
     print(" > AntColony.py path")
-    
+
 # Display Error message
-def error() : 
+def error() :
     print(f"{CRED}--------------")
     print("/!\\ Error /!\\")
     print(f"--------------{CEND}")
@@ -83,7 +83,7 @@ def exitProg() :
     print(f"{CRED}Program failed")
     print(f"Exit.{CEND}")
     exit()
-    
+
 # Display Item list
 def disItLi(itemLi):
     ressources.fullLine(90)
@@ -101,7 +101,7 @@ def disItLi(itemLi):
 #     tmp = 0
 #     # Init the probability value
 #     for i in range(n):
-#         P.append(trail*liItem[i].ratio) 
+#         P.append(trail*liItem[i].ratio)
 #         tmp += trail*liItem[i].ratio
 #     # Divisions by the total
 #     for i in range(n):
@@ -115,7 +115,7 @@ def disItLi(itemLi):
 #     # Init the probability value
 #     for i in range(n):
 #         P.append(trail*liItem[i].value)
-#         tmp += trail*liItem[i].value   
+#         tmp += trail*liItem[i].value
 #     # Divisions by the total
 #     for i in range(n):
 #         P[i] /= tmp
@@ -124,23 +124,23 @@ def disItLi(itemLi):
 # # Create the list of probability with attractive weight
 # def makePweight(liItem,n,trail):
 #     P = []
-#     tmp = 0 
-#     # Init the probability value 
+#     tmp = 0
+#     # Init the probability value
 #     for i in range(n):
 #         P.append(trail*liItem[i].weight)
 #         tmp += trail*liItem[i].weight
 #     # Divisions by the total
 #     for i in range(n):
-#         P[i] /= tmp 
+#         P[i] /= tmp
 #     return P
 
-# Create list of pheromones 
+# Create list of pheromones
 def initT(phero,n):
     T = []
     for i in range(n):
         T.append(phero)
     return T
-    
+
 
 # Create the list of strenght attractivity
 def initL(liItem, n, type):
@@ -182,9 +182,9 @@ def updateP(P, T, L, n):
         # Update the final probability list
         for i in range(n):
             P[i] /= tmp
-        
+
     return P
-    
+
 
 
 # Update the list of trail
@@ -196,26 +196,26 @@ def updateT(T, S, Zgb, Zb):
         T[i] += 1/(1+((Zgb-Zb)/Zgb))
     return T
 
-            
-def removeBig(liItem, P, V, n):
-    # Analize each element of P if one is too fat
+
+def removeBig(liItem, L, V, n):
+    # Analize each element of L if one is too fat
     for i in range(n):
-        if(liItem[i].weight > V):
-            P[i] = 0
-    return P
-           
+        if(liItem[i].weight > V and L[i] != 0):
+            L[i] = 0
+    return L
+
 
 # Evaporation of pheromones
 def evapT(T, n, ev):
     for i in range(n):
         T[i] *= ev
-    return T 
+    return T
 
 # Update the trail of pheromones
-def updateTrail(P, Zgb, Zb, Sb,T):
-    for i in Sb:
-        T[i] += 1/(1+((Zgb-Zb)/Zgb))
-    return P
+# def updateTrail(P, Zgb, Zb, Sb,T):
+#     for i in Sb:
+#         T[i] += 1/(1+((Zgb-Zb)/Zgb))
+#     return P
 
 
 # Choose the next element from Pj randomly
@@ -234,12 +234,12 @@ def chooseNext(Pj):
         if(rand < tmp):
              return ind
         ind += 1
-    # If it's the last element 
+    # If it's the last element
     ind -= 1
-    return ind  
+    return ind
 
- 
-        
+
+
 
 
 def antColonyWithCycle(liItem, n, wMax, nbAnt, nbCycle):
@@ -248,7 +248,7 @@ def antColonyWithCycle(liItem, n, wMax, nbAnt, nbCycle):
     start_time = time.time()
 
     # Definitions
-    
+
     # List of pheromons
     T = initT(PHERO,n)
     # List of attractivity
@@ -258,16 +258,16 @@ def antColonyWithCycle(liItem, n, wMax, nbAnt, nbCycle):
 
 
 
-    # Max capacity of the bag    
+    # Max capacity of the bag
     C = wMax
     # List of objects can be into the knapsack
     N = liItem
-    
+
     # List of the best Solution
     Sb = []
     # Maximum profit found
     Zb = 0
-    # Global (For all cycle) maximum profit 
+    # Global (For all cycle) maximum profit
     Zgb = 0
     # Global (For all cycle) better solution
     Sgb = []
@@ -280,7 +280,7 @@ def antColonyWithCycle(liItem, n, wMax, nbAnt, nbCycle):
 
     trail = PHERO
     evap = EVAP
-                
+
     # For each cycle ( it's a new day for ants in the anthill)
     while(nbCycle > 0):
         # Ants leave the anthill one by one to works ( with a knapsack)
@@ -294,7 +294,10 @@ def antColonyWithCycle(liItem, n, wMax, nbAnt, nbCycle):
             # List of attractivity
             L = initL(liItem, n, RATIO)
             # While the knapsack of the ant is not full
-            while(V >= 0):
+
+            print(f"Debut {Zc}")
+
+            while(V > 0):
                 # Ant take the list of probability
                 P = updateP(P, T, L, n)
                 # Ant determine the next element (choose the index of the next element)
@@ -304,13 +307,16 @@ def antColonyWithCycle(liItem, n, wMax, nbAnt, nbCycle):
                 Zc += liItem[ind].value
                 # Ant remove the actual element from this "map"
                 L[ind] = 0
-                # The ant erase all the element who cannot be choose 
-                L = removeBig(liItem, L, V, n)
                 # The knapsack capacity is decrease and it become more heavy for the ant
-                V -= liItem[ind].weight
+                V -= liItem[ind].weight  
+                # The ant erase all the element who cannot be choose
+                L = removeBig(liItem, L, V, n)
+                # If L is like empty
+                if(sum(L) == 0):
+                    break
             # Find the best of the day
             if(Zb < Zc):
-                # Update the better profit 
+                # Update the better profit
                 Zb = Zc
                 # Update the better solution
                 Sb = Sp
@@ -318,19 +324,20 @@ def antColonyWithCycle(liItem, n, wMax, nbAnt, nbCycle):
         if(Zgb < Zb):
             Zgb = Zb
             Sgb = Sb
-        # Decrease the cycle ( it's de night for the anthill, all the ants go to sleep)         
-        nbCycle -= 1 
-        # During the night the pheromones evaporate        
+        # Decrease the cycle ( it's de night for the anthill, all the ants go to sleep)
+        nbCycle -= 1
+        # During the night the pheromones evaporate
         T = evapT(P,n,evap)
         # Also some ants do the 3x8 and update the trail of pheromone for tomorrow
-        T = updateT(T, Sb, Zgb, Zb)
+        T = updateT(T, Sgb, Zgb, Zb)
+        print(T)
 
 
 
 
     vTot = Zgb
     res = Sgb
-    
+
     # Stock timer now
     end_time = time.time()
     tExec = end_time - start_time
@@ -352,10 +359,10 @@ def antColonyWithCycle(liItem, n, wMax, nbAnt, nbCycle):
 #     print("Not enough arguments (" + str(len(sys.argv)) + "): ")
 #     manual()
 #     exitProg()
-    
+
 # # Authorized option
 # AuthOpt = ['a','v','w','r']
-   
+
 # # Get the option of AntColony version
 # opt = sys.argv[1]
 
@@ -369,7 +376,7 @@ def antColonyWithCycle(liItem, n, wMax, nbAnt, nbCycle):
 #     print("\t -r : only ratios attractive strenght\n")
 #     manual()
 #     exitProg()
-    
+
 # opt = opt[1]
 
 def main(type, path):
@@ -394,8 +401,8 @@ def main(type, path):
         # print(f"Time of execution : {CGREEN}{tExec}{CEND} s")
         # print(f"Time of execution : {CGREEN}{tExec*1000}{CEND} ms")
 
-        
-        # print(f"{UNDERLINE}\nInitial parameters :{CEND}")  
+
+        # print(f"{UNDERLINE}\nInitial parameters :{CEND}")
         # print(f"  n    : {BOLD}{n}{CEND}")
         # print(f"  wMax : {BOLD}{wMax}{CEND}")
     if type == "multi":
@@ -403,3 +410,77 @@ def main(type, path):
         tExec = 0
 
     return tExec, vTot, n
+
+
+
+#
+#  +------+
+#  | Main |
+#  +------+
+#
+
+
+# #Verify if the nb of arguments is correct
+# if len(sys.argv)-1 < 1 :
+#     error()
+#     print("Not enough arguments (" + str(len(sys.argv)) + "): ")
+#     manual()
+#     exitProg()
+
+# # Authorized option
+# AuthOpt = ['a','v','w','r']
+
+# # Get the option of AntColony version
+# opt = sys.argv[1]
+
+# # Verify if the option is valid
+# if ((len(opt)!=2) or (opt[1] not in AuthOpt)):
+#     error()
+#     print("The option need to be one character :")
+#     print("\t -a : all attractive strength available")
+#     print("\t -v : only value attractive strenght")
+#     print("\t -w : only weights attractive strength")
+#     print("\t -r : only ratios attractive strenght\n")
+#     manual()
+#     exitProg()
+
+# opt = opt[1]
+
+def main2():
+    # Verify if the nb of arguments is correct
+    if len(sys.argv)-1 < 1 :
+        error()
+        print("Not enough arguments (" + str(len(sys.argv)) + "): ")
+        manual()
+        exitProg()
+
+
+    # Get the path of the file
+    path = sys.argv[1]
+
+    # Check if the path is correct
+    try :
+        # Stock values of the file
+        n, wMax, liItem = ressources.readFileCreateList(path)
+    except :
+        error()
+        print("\tThe path doesn't exist")
+        exitProg()
+
+
+
+    # Result
+
+    print(f"{UNDERLINE}{BOLD}\nEvaluation with Ant Colony Optimization algorithm using ratios for attractive strenght:\n{CEND}")
+
+    vTot, res, tExec = antColonyWithCycle(liItem, n, wMax, ANTS, CYCLES)
+
+    print(f"\nMaximum value result : {CBLUE}{BOLD}{vTot}{CEND}")
+    print(f"List of result (From the initial file): {CBLUE}{BOLD}{res}{CEND}")
+    print(f"Time of execution : {CGREEN}{tExec}{CEND} s")
+    print(f"Time of execution : {CGREEN}{tExec*1000}{CEND} ms")
+
+
+    print(f"{UNDERLINE}\nInitial parameters :{CEND}")
+    print(f"  n    : {BOLD}{n}{CEND}")
+    print(f"  wMax : {BOLD}{wMax}{CEND}")
