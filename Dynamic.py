@@ -68,6 +68,6 @@ def main(type, path):
         MaxValue = a[nbrItems-1, capacity]
         start = time.time() - start
     if type == "multi":
-        best_Value = 0
+        MaxValue = 0
         start = 0
-    return start, MaxValue
+    return start, MaxValue , nbrItems

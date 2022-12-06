@@ -222,15 +222,15 @@ def updateTrail(P, Zgb, Zb, Sb,T):
 def chooseNext(Pj):
     # Take a value (float) between [0.0-1.0]
     rand = random()
-    print("\n \n")
-    print(rand)
-    print(Pj)
+    # print("\n \n")
+    # print(rand)
+    # print(Pj)
     # Iteration to match random number with the list of probability
     tmp = 0
     ind = 0 # stock index
     for i in Pj:
         tmp += i
-        print(tmp)
+        # print(tmp)
         if(rand < tmp):
              return ind
         ind += 1
@@ -346,8 +346,6 @@ def antColonyWithCycle(liItem, n, wMax, nbAnt, nbCycle):
 #  | Main |
 #  +------+
 #
-
-
 # #Verify if the nb of arguments is correct
 # if len(sys.argv)-1 < 1 :
 #     error()
@@ -374,34 +372,34 @@ def antColonyWithCycle(liItem, n, wMax, nbAnt, nbCycle):
     
 # opt = opt[1]
 
+def main(type, path):
+    # Get the path of the file
+    if type == 'simple':
+        # Check if the path is correct
+        try :
+            # Stock values of the file
+            n, wMax, liItem = ressources.readFileCreateList(path)
+        except :
+            error()
+            print("\tThe path doesn't exist")
+            exitProg()
 
-    
-# Get the path of the file
-path = sys.argv[1]
+        # Result
+        # print(f"{UNDERLINE}{BOLD}\nEvaluation with Ant Colony Optimization algorithm using ratios for attractive strenght:\n{CEND}")
 
-# Check if the path is correct
-try :
-    # Stock values of the file
-    n, wMax, liItem = ressources.readFileCreateList(path)
-except :
-    error()
-    print("\tThe path doesn't exist")
-    exitProg()
-    
-    
-    
-# Result
+        vTot, res, tExec = antColonyWithCycle(liItem, n, wMax, ANTS, CYCLES)
 
-print(f"{UNDERLINE}{BOLD}\nEvaluation with Ant Colony Optimization algorithm using ratios for attractive strenght:\n{CEND}")
+        # print(f"\nMaximum value result : {CBLUE}{BOLD}{vTot}{CEND}")
+        # print(f"List of result (From the initial file): {CBLUE}{BOLD}{res}{CEND}")
+        # print(f"Time of execution : {CGREEN}{tExec}{CEND} s")
+        # print(f"Time of execution : {CGREEN}{tExec*1000}{CEND} ms")
 
-vTot, res, tExec = antColonyWithCycle(liItem, n, wMax, ANTS, CYCLES)
+        
+        # print(f"{UNDERLINE}\nInitial parameters :{CEND}")  
+        # print(f"  n    : {BOLD}{n}{CEND}")
+        # print(f"  wMax : {BOLD}{wMax}{CEND}")
+    if type == "multi":
+        vTot = 0
+        tExec = 0
 
-print(f"\nMaximum value result : {CBLUE}{BOLD}{vTot}{CEND}")
-print(f"List of result (From the initial file): {CBLUE}{BOLD}{res}{CEND}")
-print(f"Time of execution : {CGREEN}{tExec}{CEND} s")
-print(f"Time of execution : {CGREEN}{tExec*1000}{CEND} ms")
-
-  
-print(f"{UNDERLINE}\nInitial parameters :{CEND}")  
-print(f"  n    : {BOLD}{n}{CEND}")
-print(f"  wMax : {BOLD}{wMax}{CEND}")
+    return tExec, vTot, n

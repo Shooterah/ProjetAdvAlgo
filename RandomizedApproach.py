@@ -201,13 +201,13 @@ def main(type, path):
         # We test the algorithm
         solution, execution_time = randomSolution(capacity, items, nbrItems)
 
-        for item in solution:
-            item.printItem()
-        print("Value of the solution: ", valueSolution(solution))
-        print("Weight of the solution: ", weightSolution(solution))
-        print("Execution time: ", execution_time)
+        # for item in solution:
+        #     item.printItem()
+        # print("Value of the solution: ", valueSolution(solution))
+        # print("Weight of the solution: ", weightSolution(solution))
+        # print("Execution time: ", execution_time)
         
-        return execution_time, valueSolution(solution)
+        return execution_time, valueSolution(solution), nbrItems
     
     elif(type == "multiDim"):
         
@@ -217,10 +217,10 @@ def main(type, path):
         # We test the algorithm
         solution, execution_time = randomSolutionMultiDimensional(capacity, items, nbrItems, nbrDimensions)
 
-        for item in solution:
-            item.printItem()
-        print("Value of the solution: ", valueSolution(solution))
-        print("Weight of the solution: ", weightSolutionMultiDimensional(solution, nbrDimensions))
-        print("Execution time: ", execution_time)
+        # for item in solution:
+        #     item.printItem()
+        # print("Value of the solution: ", valueSolution(solution))
+        # print("Weight of the solution: ", weightSolutionMultiDimensional(solution, nbrDimensions))
+        # print("Execution time: ", execution_time)
 
-        return execution_time, valueSolution(solution)
+        return execution_time, valueSolution(solution),nbrItems

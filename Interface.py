@@ -9,16 +9,21 @@ import Branch_and_Bound
 import DataGenerator
 import RandomizedApproach
 import Dynamic
+import AntColony
+import Dynamic_top_down
+import Fully_polynomial_time
 
 #creat a boolean for all the algorithms
 bruteAct = False
 branchAct = False
 DynamicAct = False
+DynamicTDAct = False
 AntcolonyAct = False
 RandomizedAct = False
 greedy1Act = False
 greedy2Act = False
 greedy3Act = False
+fullpolyAct = False
 
 
 
@@ -34,7 +39,7 @@ timeSimple = {
     "fullpoly": "",
     "random": "",
     "ant": "",
-    "personnal": ""
+    "dynamicTopDown": "",
 }
 maxValueSimple = {
     "brute": "",
@@ -46,7 +51,7 @@ maxValueSimple = {
     "fullpoly": "",
     "random": "",
     "ant": "",
-    "personnal": ""
+    "dynamicTopDown": "",
 }
 
 # Dictionnary Variable time and MaxValue from the programes for the MultiDimensional knapsack problem
@@ -60,7 +65,7 @@ timeMultiDim = {
     "fullpoly": "",
     "random": "",
     "ant": "",
-    "personnal": ""
+    "dynamicTopDown": "",
 }
 maxValueMultiDim = {
     "brute": "",
@@ -72,7 +77,7 @@ maxValueMultiDim = {
     "fullpoly": "",
     "random": "",
     "ant": "",
-    "personnal": ""
+    "dynamicTopDown": "",
 }
 def callBruteForce(problemType,fnright,frame_left,canvas):
     global bruteAct
@@ -82,7 +87,7 @@ def callBruteForce(problemType,fnright,frame_left,canvas):
         path = "Data/low-dimensional/"+fnright.get()
         timeSimple["brute"], maxValueSimple["brute"],nbrItems = BruteForce.main(
             "simple", path)
-        file = open("Results/Bruteforce", "a")
+        file = open("Results/low-dimensional/Bruteforce", "a")
         file.write(str(timeSimple["brute"]) +" "+str(nbrItems)+"\n")
         file.close()
         bruteAct = True
@@ -115,15 +120,22 @@ def callgreedyr(problemType,fnright,frame_left,canvas):
     subprocess.run(["python", "Greedy.py", "-r", path])
 
 def callDynamic(problemType,fnright,frame_left,canvas):
+    global DynamicAct
+    nbrItems = 0
     if problemType.get() == "simple":
         path = "Data/low-dimensional/"+fnright.get()
-        timeSimple["dynamic"], maxValueSimple["dynamic"] = Dynamic.main(
+        timeSimple["dynamic"], maxValueSimple["dynamic"],nbrItems = Dynamic.main(
             "simple", path)
+        file = open("Results/low-dimensional/Dynamic", "a")
+        file.write(str(timeSimple["dynamic"]) +" "+str(nbrItems)+"\n")
+        file.close()
+        DynamicAct = True
     elif problemType.get() == "multiDim":
         path = "Data/multi-dimentional/"+fnright.get()
         timeSimple["dynamic"], maxValueSimple["dynamic"] = Dynamic.main(
             "multi", path)
     # Refreh the values printed in the window (time and max value)
+    init_grid(canvas)
     reloadValues(frame_left,problemType)
 
 def callBranchAndBound(problemType,fnright,frame_left,canvas):
@@ -133,7 +145,7 @@ def callBranchAndBound(problemType,fnright,frame_left,canvas):
         path = "Data/low-dimensional/"+fnright.get()
         timeSimple["branch"], maxValueSimple["branch"],nbrItems = Branch_and_Bound.main(
             "simple", path)
-        file = open("Results/Branch_and_Bound", "a")
+        file = open("Results/low-dimensional/Branch_and_Bound", "a")
         file.write(str(timeSimple["branch"]) +" "+str(nbrItems)+"\n")
         file.close()
         branchAct = True
@@ -145,19 +157,78 @@ def callBranchAndBound(problemType,fnright,frame_left,canvas):
     init_grid(canvas)
     reloadValues(frame_left,problemType)
 
-def callRandom(problemType,fnright,frame_left,canvas):
+def callFPTAS(problemType,fnright,frame_left,canvas):
+    global fullpolyAct
+    nbrItems = 0
     if problemType.get() == "simple":
         path = "Data/low-dimensional/"+fnright.get()
-        timeSimple["random"], maxValueSimple["random"] = RandomizedApproach.main(
+        timeSimple["fullpoly"], maxValueSimple["fullpoly"],nbrItems = Fully_polynomial_time.main(
             "simple", path)
-        print("time=", timeSimple["random"],
-              "maxValue=", maxValueSimple["random"])
+        file = open("Results/low-dimensional/Branch_and_Bound", "a")
+        file.write(str(timeSimple["fullpoly"]) +" "+str(nbrItems)+"\n")
+        file.close()
+        fullpolyAct = True
+    elif problemType.get() == "multiDim":
+        path = "Data/multi-dimentional/"+fnright.get()
+        timeSimple["fullpoly"], maxValueSimple["fullpoly"] = Fully_polynomial_time.main(
+            "multi", path)
+    # Refreh the values printed in the window (time and max value)
+    init_grid(canvas)
+    reloadValues(frame_left,problemType)
+
+def callRandom(problemType,fnright,frame_left,canvas):
+    global RandomizedAct
+    if problemType.get() == "simple":
+        path = "Data/low-dimensional/"+fnright.get()
+        timeSimple["random"], maxValueSimple["random"],nbrItems = RandomizedApproach.main(
+            "simple", path)
+        file = open("Results/low-dimensional/RandomizedApproach", "a")
+        file.write(str(timeSimple["random"]) +" "+str(nbrItems)+"\n")
+        file.close()
+        RandomizedAct = True
     elif problemType.get() == "multiDim":
         path = "Data/multi-dimentional/"+fnright.get()
         timeMultiDim["random"], maxValueMultiDim["random"] = RandomizedApproach.main(
             "multiDim", path)
         print("time=", timeMultiDim["random"],
               "maxValue=", maxValueMultiDim["random"])
+    # Refreh the values printed in the window (time and max value)
+    init_grid(canvas)
+    reloadValues(frame_left,problemType)
+
+def callDynamicTopDown(problemType,fnright,frame_left,canvas):
+    global DynamicTopDownAct
+    nbrItems = 0
+    if problemType.get() == "simple":
+        path = "Data/low-dimensional/"+fnright.get()
+        timeSimple["dynamicTopDown"], maxValueSimple["dynamicTopDown"],nbrItems = Dynamic_top_down.main(
+            "simple", path)
+        file = open("Results/low-dimensional/DynamicTopDown", "a")
+        file.write(str(timeSimple["dynamicTopDown"]) +" "+str(nbrItems)+"\n")
+        file.close()
+        DynamicTopDownAct = True
+    elif problemType.get() == "multiDim":
+        path = "Data/multi-dimentional/"+fnright.get()
+        timeMultiDim["dynamicTopDown"], maxValueMultiDim["dynamicTopDown"] = Dynamic_top_down.main("multiDim", path)
+    # Refreh the values printed in the window (time and max value)
+    init_grid(canvas)
+    reloadValues(frame_left,problemType)
+
+def callAnt(problemType,fnright,frame_left,canvas):
+    global AntColonyAct
+    if problemType.get() == "simple":
+        path = "Data/low-dimensional/"+fnright.get()
+        timeSimple["ant"], maxValueSimple["ant"],nbrItems = AntColony.main(
+            "simple", path)
+        file = open("Results/low-dimensional/AntColony", "a")
+        file.write(str(timeSimple["ant"]) +" "+str(nbrItems)+"\n")
+        file.close()
+        AntColonyAct = True
+    elif problemType.get() == "multiDim":
+        path = "Data/multi-dimentional/"+fnright.get()
+        timeMultiDim["ant"], maxValueMultiDim["ant"] = AntColony.main(
+            "multiDim", path)
+        print("time=", timeMultiDim["ant"], "maxValue=", maxValueMultiDim["ant"])
     # Refreh the values printed in the window (time and max value)
     init_grid(canvas)
     reloadValues(frame_left,problemType)
@@ -223,16 +294,14 @@ def draw_samples(canvas,filename,color):
         #draw the graph representing the time of execution of the bruteforce algorithm in function of the number of items come from the file "Results/Bruteforce"
 
         for i in range(len(time)):
-            if time[i] == 0:
-                canvas.create_oval(( 450/25)*nitems[i], 595,( 450/25)*nitems[i]+10, 605, fill=color)
-                canvas.create_text(( 450/25)*nitems[i]+10, 600, text=str(nitems[i]), anchor=SW)
-            else:
-                if time[i] < time[i-1]:
-                    canvas.create_line(( 450/25)*nitems[i], 600 - (time[i-1]*13.3),( 450/25)*nitems[i], 600 - (time[i-1]*13.3), width=3, fill=color)
+                if time[i] < time[i-1] and i != len(time):
+                    if i != 0:
+                        canvas.create_line(( 450/25)*nitems[i], 600 - (time[i]*13.3),( 450/25)*nitems[i], 600 - (time[i-1]*13.3), width=3, fill=color)
                     canvas.create_oval(( 450/25)*nitems[i], 595,( 450/25)*nitems[i]+10, 605, fill=color)
                     canvas.create_text(( 450/25)*nitems[i]+10, 600, text=str(nitems[i]), anchor=SW)
-                else:
-                    canvas.create_line(( 450/25)*nitems[i-1], 600 - (time[i-1]*13.3),( 450/25)*nitems[i], 600 - (time[i]*13.3), width=3, fill=color)
+                elif i != len(time)+1:
+                    if i != 0:
+                        canvas.create_line(( 450/25)*nitems[i-1], 600 - (time[i-1]*13.3),( 450/25)*nitems[i], 600 - (time[i]*13.3), width=3, fill=color)
                     canvas.create_oval(( 450/25)*nitems[i], 595 - (time[i]*13.3),( 450/25)*nitems[i]+10, 605 - (time[i]*13.3), fill=color)
                     canvas.create_text(10 + (nitems[i]*18), 595 - (time[i]*13.3), text=str(nitems[i]), anchor=SW)
 
@@ -262,21 +331,21 @@ def draw_grid(canvas, width, height):
 
     #draw samples for all the algorithms with all time a different color
     if bruteAct == True:
-        draw_samples(canvas,"Results/Bruteforce","red")
+        draw_samples(canvas,"Results/low-dimensional/Bruteforce","red")
     if branchAct == True:
-        draw_samples(canvas,"Results/Branch_and_Bound","blue")
+        draw_samples(canvas,"Results/low-dimensional/Branch_and_Bound","blue")
     if DynamicAct == True:
-        draw_samples(canvas,"Results/Dynamic","green")
+        draw_samples(canvas,"Results/low-dimensional/Dynamic","green")
     if AntcolonyAct == True:
-        draw_samples(canvas,"Results/AntColony","yellow")
+        draw_samples(canvas,"Results/low-dimensional/AntColony","yellow")
     if RandomizedAct == True:
-        draw_samples(canvas,"Results/Randomized","orange")
+        draw_samples(canvas,"Results/low-dimensional/RandomizedApproach","orange")
     if greedy1Act == True:
-        draw_samples(canvas,"Results/Greedy1","pink")
+        draw_samples(canvas,"Results/low-dimensional/Greedy1","pink")
     if greedy2Act == True:
-        draw_samples(canvas,"Results/Greedy2","purple")
+        draw_samples(canvas,"Results/low-dimensional/Greedy2","purple")
     if greedy3Act == True:
-        draw_samples(canvas,"Results/Greedy3","brown")
+        draw_samples(canvas,"Results/low-dimensional/Greedy3","brown")
 
 def reset(canvas):
     global bruteAct
@@ -477,7 +546,7 @@ def main():
     button6.grid(row=8, column=0, columnspan=3, sticky=NSEW)
 
     button7 = Button(frame_left, text="Fully polynomial time",
-                    bg="#8BC49A", fg="black", bd=1,)
+                    bg="#8BC49A", fg="black", bd=1, command=lambda:callFPTAS(problemType,fnright,frame_left,canvas))
     button7.grid(row=9, column=0, columnspan=3, sticky=NSEW)
 
     button8 = Button(frame_left, text="Randomized approach",
@@ -485,11 +554,11 @@ def main():
     button8.grid(row=10, column=0, columnspan=3, sticky=NSEW)
 
     button9 = Button(frame_left, text="Ant colony",
-                    bg="#8BC49A", fg="black", bd=1)
+                    bg="#8BC49A", fg="black", bd=1, command=lambda:callAnt(problemType,fnright,frame_left,canvas))
     button9.grid(row=11, column=0, columnspan=3, sticky=NSEW)
 
-    button10 = Button(frame_left, text="Personnal algorithm",
-                    bg="#8BC49A", fg="black", bd=1)
+    button10 = Button(frame_left, text="Dynamic Top Down",
+                    bg="#8BC49A", fg="black", bd=1, command=lambda:callDynamicTopDown(problemType,fnright,frame_left,canvas))
     button10.grid(row=12, column=0, columnspan=3, sticky=NSEW)
 
 

@@ -185,23 +185,23 @@ def main(type, path):
 
         # Here we print the list of possible combinations of items with the highest value and the highest weight that they can carry, and of course, the execution time of the algorithm
         for combinaison in sortedList:
-            print()
-            print("*******************Best Combinaisons*******************")
-            print()
+            # print()
+            # print("*******************Best Combinaisons*******************")
+            # print()
             for item in combinaison:
                 maxValue += item.value
                 finalWeight += item.weight
                 item.printItem()
-            print("Total Value : " + str(finalValue))
-            print("Total Weight : " + str(finalWeight))
+            # print("Total Value : " + str(finalValue))
+            # print("Total Weight : " + str(finalWeight))
             finalValue = maxValue
             maxValue = 0
             finalWeight = 0
 
-        print()
-        print("*******************Execution Time*******************")
-        print()
-        print("Execution time: ", timeExec, " seconds")
+        # print()
+        # print("*******************Execution Time*******************")
+        # print()
+        # print("Execution time: ", timeExec, " seconds")
 
     ########################################################################
     ############### EXECUTION OF MULTIDIMENSIONAL KNAPSACK #################
@@ -222,24 +222,24 @@ def main(type, path):
 
         # Here we print the list of possible combinations of items with the highest value and the highest weight that they can carry, and of course, the execution time of the algorithm
         for combinaison in sortedList:
-            print()
-            print("*******************Best Combinaisons*******************")
-            print()
+            # print()
+            # print("*******************Best Combinaisons*******************")
+            # print()
             for item in combinaison:
                 for i in range(nbrDimension):
                     finalWeight[i] += item.weight[i]
                 item.printItem()
-            print("Total Weight : " + str(finalWeight))
+            # print("Total Weight : " + str(finalWeight))
             finalWeight = [0] * nbrDimension
 
-        print()
-        print("*******************Execution Time*******************")
-        print()
-        print("Execution time: ", timeExec, " seconds")
+        # print()
+        # print("*******************Execution Time*******************")
+        # print()
+        # print("Execution time: ", timeExec, " seconds")
 
-        print()
-        print("*******************Optimal Value*******************")
-        print()
-        print("Optimal value found: ", finalValue)
+        # print()
+        # print("*******************Optimal Value*******************")
+        # print()
+        # print("Optimal value found: ", finalValue)
 
     return timeExec, finalValue , nbrItems

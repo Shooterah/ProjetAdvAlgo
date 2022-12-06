@@ -85,7 +85,6 @@ def main(type, path):
     # Main for the simple knapsack problem
     if type == "simple":
         # start the timer
-        start = time.time()
         # Here we get the number of items the knapsack capacity and a list of items composed of positioning in the texte,value and weight.
         nbrItems, capacity, items = ressources.readFileCreateList(path)
         # We sort the list of items by value/weight ratio
@@ -93,6 +92,8 @@ def main(type, path):
         # We stock the max value of all items
         for i in items:
             maxValue += i.value
+        # start the timer
+        start = time.time()
         # There we add each item of the list inside the tree and compute the value of all items.
         for data in items:
             ressources.Node.addNode(Tree, data, 0, maxValue, 0, None, None,nbrItems)
