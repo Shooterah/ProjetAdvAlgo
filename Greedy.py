@@ -242,7 +242,7 @@ def greedy(path, idGreedy):
         print("\tThe idGreedy doesn't exist (1, 2 or 3)")
         exitProg()
     
-    return vTot, res, tExec
+    return tExec, vTot, res
 
 
 
@@ -256,79 +256,80 @@ def greedy(path, idGreedy):
 
 
 
-
-# Verify if the nb of arguments is correct
-if len(sys.argv)-1 < 1 :
-    error()
-    print("Not enough arguments (" + str(len(sys.argv)) + "): ")
-    manual()
-    exitProg()
+def main():
+    # Verify if the nb of arguments is correct
+    if len(sys.argv)-1 < 1 :
+        error()
+        print("Not enough arguments (" + str(len(sys.argv)) + "): ")
+        manual()
+        exitProg()
+        
+    # Authorized option
+    AuthOpt = ['a','v','w','r']
     
-# Authorized option
-AuthOpt = ['a','v','w','r']
-   
-# Get the option of greedy version
-opt = sys.argv[1]
+    # Get the option of greedy version
+    opt = sys.argv[1]
 
-# Verify if the option is valid
-if ((len(opt)!=2) or (opt[1] not in AuthOpt)):
-    error()
-    print("The option need to be one character :")
-    print("\t -a : all greedys resolution")
-    print("\t -v : only values greedy resolution")
-    print("\t -w : only weights greedy resolution")
-    print("\t -r : only ratios greedy resolution\n")
-    manual()
-    exitProg()
+    # Verify if the option is valid
+    if ((len(opt)!=2) or (opt[1] not in AuthOpt)):
+        error()
+        print("The option need to be one character :")
+        print("\t -a : all greedys resolution")
+        print("\t -v : only values greedy resolution")
+        print("\t -w : only weights greedy resolution")
+        print("\t -r : only ratios greedy resolution\n")
+        manual()
+        exitProg()
+        
+    opt = opt[1]
+        
+    # Get the path of the file
+    path = sys.argv[2]
+
+    # Check if the path is correct
+    try :
+        # Stock values of the file
+        n, wMax, liItem = ressources.readFileCreateList(path)
+    except :
+        error()
+        print("\tThe path doesn't exist")
+        exitProg()
+
+
+    #
+    #   Knapsack problem resolution with greedy 
+    #   ---------------------------------------
+
+    # Result with Greedy 1 ( option : 'a' or 'v') :
+    if (opt == 'a' or opt == 'v'):
+        print(UNDERLINE + BOLD + "\nEvaluation with greedy algorithm using values :\n" + CEND)
+        vTot, res, tExec = greedy1(liItem, n ,wMax)
+        print("\nMaximum value result : " + CBLUE + BOLD + str(vTot) + CEND)
+        print("List of result (From the initial file): " + CBLUE + BOLD + str(res) + CEND)
+        print("Time of execution :" + CGREEN + str(tExec) + CEND + "s")
+
+        
+    # Result with Greedy 2 ( option : 'a' or 'w') : 
+    if (opt == 'a' or opt == 'w'):
+        print(UNDERLINE + BOLD + "\nEvaluation with greedy algorithm using weights :\n" + CEND)
+        vTot, res, tExec = greedy2(liItem, n ,wMax)
+        print("\nMaximum value result : " + CBLUE + BOLD + str(vTot) + CEND)
+        print("List of result (From the initial file): " + CBLUE + BOLD + str(res) + CEND)
+        print("Time of execution :" + CGREEN + str(tExec) + CEND + "s")
+
+
+    # Result with Greedy 3 ( option : 'a' or 'r') :
+    if (opt == 'a' or opt == 'r'):
+        print(UNDERLINE + BOLD + "\nEvaluation with greedy algorithm using ratios :\n" + CEND)
+        vTot, res, tExec = greedy3(liItem, n ,wMax)
+        print("\nMaximum value result : " + CBLUE + BOLD + str(vTot) + CEND)
+        print("List of result (From the initial file): " + CBLUE + BOLD + str(res) + CEND)
+        print("Time of execution :" + CGREEN + str(tExec) + CEND + "s")
+
     
-opt = opt[1]
-    
-# Get the path of the file
-path = sys.argv[2]
+    print(UNDERLINE + "\nInitial parameters :" + CEND)  
+    print("  n    : " + BOLD + str(n) + CEND)
+    print("  wMax : " + BOLD + str(wMax) + CEND)
+        
+    #print("End")
 
-# Check if the path is correct
-try :
-    # Stock values of the file
-    n, wMax, liItem = ressources.readFileCreateList(path)
-except :
-    error()
-    print("\tThe path doesn't exist")
-    exitProg()
-
-
-#
-#   Knapsack problem resolution with greedy 
-#   ---------------------------------------
-
-# Result with Greedy 1 ( option : 'a' or 'v') :
-if (opt == 'a' or opt == 'v'):
-    print(UNDERLINE + BOLD + "\nEvaluation with greedy algorithm using values :\n" + CEND)
-    vTot, res, tExec = greedy1(liItem, n ,wMax)
-    print("\nMaximum value result : " + CBLUE + BOLD + str(vTot) + CEND)
-    print("List of result (From the initial file): " + CBLUE + BOLD + str(res) + CEND)
-    print("Time of execution :" + CGREEN + str(tExec) + CEND + "s")
-
-    
-# Result with Greedy 2 ( option : 'a' or 'w') : 
-if (opt == 'a' or opt == 'w'):
-    print(UNDERLINE + BOLD + "\nEvaluation with greedy algorithm using weights :\n" + CEND)
-    vTot, res, tExec = greedy2(liItem, n ,wMax)
-    print("\nMaximum value result : " + CBLUE + BOLD + str(vTot) + CEND)
-    print("List of result (From the initial file): " + CBLUE + BOLD + str(res) + CEND)
-    print("Time of execution :" + CGREEN + str(tExec) + CEND + "s")
-
-
-# Result with Greedy 3 ( option : 'a' or 'r') :
-if (opt == 'a' or opt == 'r'):
-    print(UNDERLINE + BOLD + "\nEvaluation with greedy algorithm using ratios :\n" + CEND)
-    vTot, res, tExec = greedy3(liItem, n ,wMax)
-    print("\nMaximum value result : " + CBLUE + BOLD + str(vTot) + CEND)
-    print("List of result (From the initial file): " + CBLUE + BOLD + str(res) + CEND)
-    print("Time of execution :" + CGREEN + str(tExec) + CEND + "s")
-
-  
-print(UNDERLINE + "\nInitial parameters :" + CEND)  
-print("  n    : " + BOLD + str(n) + CEND)
-print("  wMax : " + BOLD + str(wMax) + CEND)
-    
-#print("End")
