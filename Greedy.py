@@ -242,7 +242,7 @@ def greedy(path, idGreedy):
         print("\tThe idGreedy doesn't exist (1, 2 or 3)")
         exitProg()
     
-    return tExec, vTot, res
+    return tExec, vTot, n
 
 
 
