@@ -7,6 +7,7 @@ import tkinter
 import BruteForce
 import Branch_and_Bound
 import DataGenerator
+from Greedy import greedy
 import RandomizedApproach
 import Dynamic
 import AntColony
@@ -25,7 +26,16 @@ greedy2Act = False
 greedy3Act = False
 fullpolyAct = False
 
+#
+#  +-----------+
+#  | Constants |
+#  +-----------+
+#
 
+# For the type of greedy
+VALUE = 1
+WEIGHT = 2
+RATIO = 3
 
 
 # Dictionnary Variable time and MaxValue from the programes for the simple knapsack problem
@@ -99,25 +109,57 @@ def callBruteForce(problemType,fnright,frame_left,canvas):
     init_grid(canvas)
     reloadValues(frame_left,problemType)
 
-def callgreedyv(problemType,fnright,frame_left,canvas):
+def callgreedy(problemType,fnright,frame_left,canvas, greedyType):
+    global greedyAct1
+    global greedyAct2
+    global greedyAct3
+    nbrItems = 0
+    if problemType.get() == "simple":
+        # retrieve the file name
+        path = "Data/low-dimensional/"+fnright.get()
+        print("path=", path)
+        #subprocess.run(["python", "Greedy.py", "-v",path])
+        # Verify the type of greedy
+        if(greedyType == VALUE):
+            timeSimple["greedyV"], maxValueSimple["greedyV"],nbrItems = greedy(path,1)
+            # Open file to stock the result
+            file = open("Results/low-dimensional/GreedyV", "a")
+            file.write(str(timeSimple["greedyV"]) +" "+str(nbrItems)+"\n")
+            file.close()
+        elif(greedyType == WEIGHT):
+            timeSimple["greedyW"], maxValueSimple["greedyW"],nbrItems = greedy(path,2)
+            # Open file to stock the result
+            file = open("Results/low-dimensional/GreedyW", "a")
+            file.write(str(timeSimple["greedyW"]) +" "+str(nbrItems)+"\n")
+            file.close()
+        elif(greedyType == RATIO):
+            timeSimple["greedyR"], maxValueSimple["greedyR"],nbrItems = greedy(path,3)
+            # Open file to stock the result
+            file = open("Results/low-dimensional/GreedyR", "a")
+            file.write(str(timeSimple["greedyR"]) +" "+str(nbrItems)+"\n")
+            file.close()
+        else:
+            #Error
+            exit()
+    else:
+        timeSimple["greedyV"], maxValueSimple["greedyV"],nbrItems = 0,0,0
+        timeSimple["greedyW"], maxValueSimple["greedyW"],nbrItems = 0,0,0
+        timeSimple["greedyR"], maxValueSimple["greedyR"],nbrItems = 0,0,0
+    # Refreh the values printed in the window (time and max value)
+    init_grid(canvas)
+    reloadValues(frame_left,problemType)
 
-    # retrieve the file name
-    path = "Data/low-dimensional/"+fnright.get()
-    print("path=", path)
-    subprocess.run(["python", "Greedy.py", "-v",
-                   path])
+# def callgreedyw(problemType,fnright,frame_left,canvas):
+#     # retrieve the file name
+#     path = "Data/low-dimensional/"+fnright.get()
+#     print("path=", path)
+#     subprocess.run(["python", "Greedy.py", "-w", path])
 
-def callgreedyw(problemType,fnright,frame_left,canvas):
-    # retrieve the file name
-    path = "Data/low-dimensional/"+fnright.get()
-    print("path=", path)
-    subprocess.run(["python", "Greedy.py", "-w", path])
-
-def callgreedyr(problemType,fnright,frame_left,canvas):
-    # retrieve the file name
-    path = "Data/low-dimensional/"+fnright.get()
-    print("path=", path)
-    subprocess.run(["python", "Greedy.py", "-r", path])
+# def callgreedyr(problemType,fnright,frame_left,canvas):
+#     # retrieve the file name
+#     path = "Data/low-dimensional/"+fnright.get()
+#     print("path=", path)
+#     subprocess.run(["python", "Greedy.py", "-r", path])
 
 def callDynamic(problemType,fnright,frame_left,canvas):
     global DynamicAct
@@ -526,15 +568,15 @@ def main():
     button1.grid(row=3, column=0, columnspan=3, sticky=NSEW)
 
     button2 = Button(frame_left, text="Greedy Value",
-                    bg="#8BC49A", fg="black", bd=1, command=lambda:callgreedyv(problemType,fnright,frame_left,canvas))
+                    bg="#8BC49A", fg="black", bd=1, command=lambda:callgreedy(problemType,fnright,frame_left,canvas, VALUE))
     button2.grid(row=4, column=0, columnspan=3, sticky=NSEW)
 
     button3 = Button(frame_left, text="Greedy Weight",
-                    bg="#8BC49A", fg="black", bd=1, command=lambda:callgreedyw(problemType,fnright,frame_left,canvas))
+                    bg="#8BC49A", fg="black", bd=1, command=lambda:callgreedy(problemType,fnright,frame_left,canvas, WEIGHT))
     button3.grid(row=5, column=0, columnspan=3, sticky=NSEW)
 
     button4 = Button(frame_left, text="Greedy Ratio",
-                    bg="#8BC49A", fg="black", bd=1, command=lambda:callgreedyr(problemType,fnright,frame_left,canvas))
+                    bg="#8BC49A", fg="black", bd=1, command=lambda:callgreedy(problemType,fnright,frame_left,canvas, RATIO))
     button4.grid(row=6, column=0, columnspan=3, sticky=NSEW)
 
     button5 = Button(frame_left, text="Dynamic", bg="#8BC49A",
