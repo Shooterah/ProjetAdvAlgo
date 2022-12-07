@@ -206,7 +206,7 @@ def callFPTAS(problemType,fnright,frame_left,canvas):
         path = "Data/low-dimensional/"+fnright.get()
         timeSimple["fullpoly"], maxValueSimple["fullpoly"],nbrItems = Fully_polynomial_time.main(
             "simple", path)
-        file = open("Results/low-dimensional/Branch_and_Bound", "a")
+        file = open("Results/low-dimensional/FPL", "a")
         file.write(str(timeSimple["fullpoly"]) +" "+str(nbrItems)+"\n")
         file.close()
         fullpolyAct = True
@@ -239,7 +239,7 @@ def callRandom(problemType,fnright,frame_left,canvas):
     reloadValues(frame_left,problemType)
 
 def callDynamicTopDown(problemType,fnright,frame_left,canvas):
-    global DynamicTopDownAct
+    global DynamicTDAct
     nbrItems = 0
     if problemType.get() == "simple":
         path = "Data/low-dimensional/"+fnright.get()
@@ -248,7 +248,7 @@ def callDynamicTopDown(problemType,fnright,frame_left,canvas):
         file = open("Results/low-dimensional/DynamicTopDown", "a")
         file.write(str(timeSimple["dynamicTopDown"]) +" "+str(nbrItems)+"\n")
         file.close()
-        DynamicTopDownAct = True
+        DynamicTDAct = True
     elif problemType.get() == "multiDim":
         path = "Data/multi-dimentional/"+fnright.get()
         timeMultiDim["dynamicTopDown"], maxValueMultiDim["dynamicTopDown"] = Dynamic_top_down.main("multiDim", path)
@@ -348,12 +348,13 @@ def draw_samples(canvas,filename,color):
                     canvas.create_text(10 + (nitems[i]*18), 595 - (time[i]*13.3), text=str(nitems[i]), anchor=SW)
 
 def draw_grid(canvas, width, height):
-
+    global DynamicTDAct
     global bruteAct
     global branchAct
     global DynamicAct
     global AntcolonyAct
     global RandomizedAct
+    global fullpolyAct
     global greedy1Act
     global greedy2Act
     global greedy3Act
@@ -388,18 +389,23 @@ def draw_grid(canvas, width, height):
         draw_samples(canvas,"Results/low-dimensional/Greedy2","purple")
     if greedy3Act == True:
         draw_samples(canvas,"Results/low-dimensional/Greedy3","brown")
+    if DynamicTDAct == True:
+        draw_samples(canvas,"Results/low-dimensional/DynamicTopDown","black")
+    if fullpolyAct == True:
+        draw_samples(canvas,"Results/low-dimensional/FPL","grey")
 
 def reset(canvas):
     global bruteAct
     global branchAct
     global DynamicAct
+    global DynamicTDAct
     global AntcolonyAct
     global RandomizedAct
     global greedy1Act
     global greedy2Act
     global greedy3Act
 
-    if bruteAct == True or branchAct == True or DynamicAct == True or AntcolonyAct == True or RandomizedAct == True or greedy1Act == True or greedy2Act == True or greedy3Act == True:
+    if bruteAct == True or branchAct == True or DynamicAct == True or AntcolonyAct == True or RandomizedAct == True or greedy1Act == True or greedy2Act == True or greedy3Act == True or DynamicTDAct == True:
         canvas.delete("all")
         bruteAct = False
         branchAct = False
@@ -409,6 +415,7 @@ def reset(canvas):
         greedy1Act = False
         greedy2Act = False
         greedy3Act = False
+        DynamicTDAct = False
         draw_grid(canvas, 500, 650)
     else:
         draw_grid(canvas, 500, 650)

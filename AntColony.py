@@ -295,7 +295,7 @@ def antColonyWithCycle(liItem, n, wMax, nbAnt, nbCycle):
             L = initL(liItem, n, RATIO)
             # While the knapsack of the ant is not full
 
-            print(f"Debut {Zc}")
+            # print(f"Debut {Zc}")
 
             while(V > 0):
                 # Ant take the list of probability
@@ -330,7 +330,7 @@ def antColonyWithCycle(liItem, n, wMax, nbAnt, nbCycle):
         T = evapT(P,n,evap)
         # Also some ants do the 3x8 and update the trail of pheromone for tomorrow
         T = updateT(T, Sgb, Zgb, Zb)
-        print(T)
+        # print(T)
 
 
 

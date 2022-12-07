@@ -104,6 +104,10 @@ def main(type, path):
             Tree, capacity, best_Value, best_Weight, best_Combination, partial_Combination, partial_Weight, partial_Value)
         # stop the timer
         start = time.time() - start
+
+        for i in best_Combination:
+            i.printItem()
+
     # Main for the multiple knapsack problem
     if type == "multi":
         best_Value = 0
