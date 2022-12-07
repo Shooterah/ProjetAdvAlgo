@@ -103,7 +103,7 @@ def callBruteForce(problemType,fnright,frame_left,canvas):
         bruteAct = True
     elif problemType.get() == "multiDim":
         path = "Data/multi-dimentional/"+fnright.get()
-        timeMultiDim["brute"], maxValueMultiDim["brute"] = BruteForce.main(
+        timeMultiDim["brute"], maxValueMultiDim["brute"],nbrItems = BruteForce.main(
             "multi", path)
     # Refreh the values printed in the window (time and max value)
     init_grid(canvas)
@@ -230,7 +230,7 @@ def callRandom(problemType,fnright,frame_left,canvas):
         RandomizedAct = True
     elif problemType.get() == "multiDim":
         path = "Data/multi-dimentional/"+fnright.get()
-        timeMultiDim["random"], maxValueMultiDim["random"] = RandomizedApproach.main(
+        timeMultiDim["random"], maxValueMultiDim["random"],nbrItems = RandomizedApproach.main(
             "multiDim", path)
         print("time=", timeMultiDim["random"],
               "maxValue=", maxValueMultiDim["random"])
